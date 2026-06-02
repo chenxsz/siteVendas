@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ModaFácil - Sistema de Gestão</title>
+    <link rel="stylesheet" href="CSS/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+</head>
+<body>
+
+    <div id="toast-container" class="toast-container"></div>
+
+    <div id="tela-login" class="login-wrapper">
+        <div class="login-box">
+            <div class="login-header">
+                <h1>ModaFácil</h1>
+                <p>Controle de estoque na palma da mão, venda num clique.</p>
+            </div>
+            <form id="form-login" onsubmit="autenticarUsuario(event)">
+                <div class="campo-login">
+                    <label for="usuario">Usuário / Login</label>
+                    <div class="input-icone">
+                        <i class="fa-solid fa-user"></i>
+                        <input type="text" id="usuario" placeholder="Ex: fernanda.chen" required>
+                    </div>
+                </div>
+                <div class="campo-login">
+                    <label for="senha">Senha de Acesso</label>
+                    <div class="input-icone">
+                        <i class="fa-solid fa-lock"></i>
+                        <input type="password" id="senha" placeholder="••••••••" required>
+                    </div>
+                </div>
+                <button type="submit" class="btn-login">Entrar no Sistema</button>
+            </form>
+            <div id="erro-login" class="erro-mensagem"></div>
+        </div>
+    </div>
+
+    <div id="painel-sistema" class="container" style="display: none;">
+
+        <aside class="sidebar">
+            <div class="sidebar-topo">
+                <h1 onclick="alternarTela('dashboard')">ModaFácil</h1>
+                <p class="metafora-sidebar">O estoque na palma da mão, a venda num clique.</p>
+                
+                <ul>
+                    <li id="menu-dashboard" class="active" onclick="alternarTela('dashboard')">
+                        <i class="fa-solid fa-house"></i> Dashboard
+                    </li>
+                    <li id="menu-produtos" onclick="alternarTela('produtos')">
+                        <i class="fa-solid fa-shirt"></i> Produtos
+                    </li>
+                    <li id="menu-estoque" onclick="alternarTela('estoque')">
+                        <i class="fa-solid fa-box"></i> Estoque
+                    </li>
+                    <li id="menu-vendas" onclick="alternarTela('vendas')">
+                        <i class="fa-solid fa-cart-shopping"></i> Vendas
+                    </li>
+                    <li id="menu-relatorios" onclick="alternarTela('relatorios')">
+                        <i class="fa-solid fa-chart-line"></i> Relatórios
+                    </li>
+                </ul>
+            </div>
+
+            <div class="sidebar-rodape">
+                <div class="perfil-link-wrapper" id="menu-perfil" onclick="alternarTela('perfil')">
+                    <div class="avatar-bolinha">--</div>
+                    <div class="perfil-link-info">
+                        <span class="nome-usuario">Usuário</span>
+                        <span class="cargo-usuario">Cargo</span>
+                    </div>
+                    <i class="fa-solid fa-chevron-right seta-perfil"></i>
+                </div>
+            </div>
+        </aside>
+
+        <main class="content">
+
+            <div id="visao-dashboard" class="tela-conteudo">
+                <header>
+                    <h2>Dashboard</h2>
+                    <p>Confira o resumo do seu negócio hoje.</p>
+                </header>
+
+                <section class="cards">
+                    <div class="card destaque">
+                        <h3>Produtos</h3>
+                        <span id="card-total-produtos">150</span>
+                    </div>
+                    <div class="card">
+                        <h3>Vendas Hoje</h3>
+                        <span>23</span>
+                    </div>
+                    <div class="card alerta-critico">
+                        <h3>Estoque Baixo</h3>
+                        <span id="card-estoque-baixo">0</span>
+                    </div>
+                    <div class="card alerta-critico">
+                        <h3>Alertas</h3>
+                        <span id="card-total-alertas">0</span>
+                    </div>
+                </section>
+
+                <section class="dashboard-grid">
+                    <div class="grafico">
+                        <h3>Vendas dos Últimos 7 Dias</h3>
+                        <div class="fake-chart"></div>
+                    </div>
+
+                    <div class="estoque">
+                        <h3>Produtos com Estoque Baixo</h3>
+                        <table id="tabela-dashboard-alertas">
+                            <thead>
+                                <tr>
+                                    <th>Produto</th>
+                                    <th>Tamanho</th>
+                                    <th>Qtd</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                </tbody>
+                        </table>
+                    </div>
+                </section>
+            </div>
+
+            <div id="visao-produtos" class="tela-conteudo" style="display: none;">
+                <header>
+                    <h2>Gerenciamento de Produtos</h2>
+                    <p>Visão geral de produtos, especializações e variantes comerciais.</p>
+                </header>
+
+                <div class="perfil-container-bloco">
+                    <table id="tabela-lista-produtos">
+                        <thead>
+                            <tr>
+                                <th>Produto</th>
+                                <th>Tipo</th>
+                                <th>SKU</th>
+                                <th>Atributos</th>
+                                <th>Mínimo</th>
+                                <th>Atual</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div id="visao-estoque" class="tela-conteudo" style="display: none;">
+                <header>
+                    <h2>Movimentação de Estoque</h2>
+                    <p>Lance entradas, saídas manuais ou simule baixas de balcão.</p>
+                </header>
+
+                <div class="grid-simulacao" style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                    <div class="perfil-container-bloco">
+                        <h3>Registrar Movimentação</h3>
+                        <form id="form-movimentacao" onsubmit="processarMovimentacao(event)" style="margin-top: 20px; display: flex; flex-direction: column; gap: 15px;">
+                            <div class="grupo-campo" style="display: flex; flex-direction: column; gap: 8px;">
+                                <label style="font-size: 13px; font-weight: bold; color: rgb(84, 78, 139);">Selecione a Variante</label>
+                                <select id="mov-produto" required style="padding: 12px; border: 1px solid rgb(206, 204, 225); border-radius: 6px; background-color: #F8F8FC;">
+                                    </select>
+                            </div>
+
+                            <div class="grupo-campo" style="display: flex; flex-direction: column; gap: 8px;">
+                                <label style="font-size: 13px; font-weight: bold; color: rgb(84, 78, 139);">Tipo de Operação</label>
+                                <select id="mov-tipo" required style="padding: 12px; border: 1px solid rgb(206, 204, 225); border-radius: 6px; background-color: #F8F8FC;">
+                                    <option value="SAÍDA">SAÍDA (Baixa Automática / Venda)</option>
+                                    <option value="ENTRADA">ENTRADA (Ajuste / Reposição)</option>
+                                </select>
+                            </div>
+
+                            <div class="grupo-campo" style="display: flex; flex-direction: column; gap: 8px;">
+                                <label style="font-size: 13px; font-weight: bold; color: rgb(84, 78, 139);">Quantidade</label>
+                                <input type="number" id="mov-qtd" min="1" value="1" required style="padding: 12px; border: 1px solid rgb(206, 204, 225); border-radius: 6px;">
+                            </div>
+
+                            <div class="grupo-campo" style="display: flex; flex-direction: column; gap: 8px;">
+                                <label style="font-size: 13px; font-weight: bold; color: rgb(84, 78, 139);">Motivo</label>
+                                <input type="text" id="mov-motivo" placeholder="Ex: Venda no caixa / Devolução" required style="padding: 12px; border: 1px solid rgb(206, 204, 225); border-radius: 6px;">
+                            </div>
+
+                            <button type="submit" class="btn-login" style="margin-top: 10px;">Confirmar Operação</button>
+                        </form>
+                        <div id="erro-movimentacao" class="erro-mensagem" style="color: #D32F2F; font-size: 13px; font-weight: bold; margin-top: 10px;"></div>
+                    </div>
+
+                    <div class="perfil-container-bloco">
+                        <h3>Histórico Histórico de Movimentações</h3>
+                        <div style="max-height: 310px; overflow-y: auto; margin-top: 15px;">
+                            <table id="tabela-historico">
+                                <thead>
+                                    <tr>
+                                        <th>Hora</th>
+                                        <th>SKU</th>
+                                        <th>Tipo</th>
+                                        <th>Qtd</th>
+                                        <th>Operador</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="visao-perfil" class="tela-conteudo" style="display: none;">
+                <header>
+                    <h2>Meu Perfil</h2>
+                    <p>Informações de autenticação e credenciais do lojista no sistema.</p>
+                </header>
+
+                <div class="perfil-container-bloco">
+                    <div class="perfil-header-interno">
+                        <div class="avatar-grande">--</div>
+                        <div class="perfil-titulo-dados">
+                            <h3>Nome</h3>
+                            <span class="badge-perfil">Cargo</span>
+                            <p>Matrícula do Funcionário: <strong>#000</strong></p>
+                        </div>
+                        <button class="btn-logout" onclick="fazerLogout()"><i class="fa-solid fa-right-from-bracket"></i> Sair do Sistema</button>
+                    </div>
+
+                    <div class="perfil-form-dados">
+                        <h3>Dados Cadastrais e Segurança</h3>
+                        <div class="grid-inputs">
+                            <div class="grupo-campo">
+                                <label>Nome Completo</label>
+                                <input type="text" value="" disabled>
+                            </div>
+                            <div class="grupo-campo">
+                                <label>CPF do Usuário</label>
+                                <input type="text" value="" disabled>
+                            </div>
+                            <div class="grupo-campo">
+                                <label>Login de Acesso</label>
+                                <input type="text" value="" disabled>
+                            </div>
+                            <div class="grupo-campo">
+                                <label>Tipo de Banco de Dados</label>
+                                <input type="text" value="Relacional Robust" disabled>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="visao-vendas" class="tela-conteudo" style="display: none;"><header><h2>Vendas</h2><p>Módulo de Balcão e Caixa de Vendas.</p></header></div>
+            <div id="visao-relatorios" class="tela-conteudo" style="display: none;"><header><h2>Relatórios</h2><p>Módulo Estatístico e Comercial.</p></header></div>
+
+        </main>
+    </div>
+
+    <script>
+        // Banco de dados simulado com as usuárias oficiais da documentação [cite: 167]
+        const usuariosCadastrados = {
+            "fernanda.chen": { nome: "Fernanda Chen", cpf: "000.000.000-00", cargo: "3058964", matricula: "#001" },
+            "milena.cristina": { nome: "Milena Cristina dos Santos Oliveira Lima", cpf: "111.111.111-11", cargo: "3058085", matricula: "#002" },
+            "raquel.braga": { nome: "Raquel Vitória Braga Zerneri", cpf: "222.222.222-22", cargo: "3075885", matricula: "#003" },
+            "yona.maia": { nome: "Yoná Maia Menezes de Oliveira", cpf: "333.333.333-33", cargo: "3057704", matricula: "#004" }
+        };
+
+        // Estado das Variantes Comerciais (Projeto Lógico) [cite: 18, 25, 32, 39]
+        let bancoVariantes = [
+            { id: 1, produto: "Camiseta Azul", tipo: "Roupa", sku: "ROU-CAM-AZ-M", espec: "Cor: Azul / Tam: M", estoqueMinimo: 5, estoqueAtual: 2 },
+            { id: 2, produto: "Calça Jeans", tipo: "Roupa", sku: "ROU-JNS-PR-38", espec: "Cor: Preto / Tam: 38", estoqueMinimo: 3, estoqueAtual: 1 },
+            { id: 3, produto: "Vestido Vintage", tipo: "Roupa", sku: "ROU-VES-VR-P", espec: "Cor: Verde / Tam: P", estoqueMinimo: 2, estoqueAtual: 4 },
+            { id: 4, produto: "Sapato Scarpin", tipo: "Calçado", sku: "CAL-SCA-PT-37", espec: "Tam: 37", estoqueMinimo: 3, estoqueAtual: 7 }
+        ];
+
+        let historicoMovimentacoes = [];
+        let usuarioLogadoAtivo = "";
+
+        function autenticarUsuario(event) {
+            event.preventDefault();
+            const usuarioDigitado = document.getElementById('usuario').value.trim().toLowerCase();
+            const senhaDigitada = document.getElementById('senha').value;
+            const erroBox = document.getElementById('erro-login');
+            
+            const senhaPadrao = "moda123";
+
+            if (usuariosCadastrados[usuarioDigitado] && senhaDigitada === senhaPadrao) {
+                usuarioLogadoAtivo = usuarioDigitado;
+                atualizarDadosPerfil(usuarioDigitado);
+                renderizarDadosEstoque();
+
+                document.getElementById('tela-login').style.display = 'none';
+                document.getElementById('painel-sistema').style.display = 'flex';
+                alternarTela('dashboard');
+                erroBox.innerText = "";
+            } else {
+                erroBox.innerText = "Usuário ou senha incorretos. Dica: use a senha 'moda123'.";
+            }
+        }
+
+        function renderizarDadosEstoque() {
+            let totalItensVariantes = bancoVariantes.length;
+            let contadorEstoqueBaixo = 0;
+
+            const tabelaDashboardCorpo = document.querySelector("#tabela-dashboard-alertas tbody");
+            const tabelaProdutosCorpo = document.querySelector("#tabela-lista-produtos tbody");
+            const selectProdutos = document.getElementById("mov-produto");
+
+            tabelaDashboardCorpo.innerHTML = "";
+            tabelaProdutosCorpo.innerHTML = "";
+            selectProdutos.innerHTML = "";
+
+            bancoVariantes.forEach(item => {
+                const estaBaixo = item.estoqueAtual <= item.estoqueMinimo;
+                if (estaBaixo) contadorEstoqueBaixo++;
+
+                const classeLinhaAlerta = estaBaixo ? "linha-alerta" : "";
+                const statusTexto = estaBaixo ? "⚠️ CRÍTICO" : "✓ ESTÁVEL";
+
+                // 1. Aba Produtos [cite: 208, 209]
+                tabelaProdutosCorpo.innerHTML += `
+                    <tr class="${classeLinhaAlerta}">
+                        <td><strong>${item.produto}</strong></td>
+                        <td>${item.tipo}</td>
+                        <td><code>${item.sku}</code></td>
+                        <td>${item.espec}</td>
+                        <td>${item.estoqueMinimo} un</td>
+                        <td><strong>${item.estoqueAtual} un</strong></td>
+                        <td>${statusTexto}</td>
+                    </tr>
+                `;
+
+                // 2. Tabela Resumo do Dashboard [cite: 210]
+                if (estaBaixo) {
+                    tabelaDashboardCorpo.innerHTML += `
+                        <tr class="linha-alerta">
+                            <td>${item.produto}</td>
+                            <td>${item.sku.split('-').pop()}</td>
+                            <td><strong>${item.estoqueAtual}</strong></td>
+                        </tr>
+                    `;
+                }
+
+                // 3. Seletor de Opções
+                selectProdutos.innerHTML += `
+                    <option value="${item.id}">${item.produto} [${item.sku}] (Atual: ${item.estoqueAtual} un)</option>
+                `;
+            });
+
+            if (contadorEstoqueBaixo === 0) {
+                tabelaDashboardCorpo.innerHTML = `<tr><td colspan="3" style="text-align: center; color: #2E7D32; padding: 15px;">✓ Todo o estoque encontra-se estável!</td></tr>`;
+            }
+
+            document.getElementById("card-total-produtos").innerText = totalItensVariantes;
+            document.getElementById("card-estoque-baixo").innerText = contadorEstoqueBaixo;
+            document.getElementById("card-total-alertas").innerText = contadorEstoqueBaixo;
+        }
+
+        function processarMovimentacao(event) {
+            event.preventDefault();
+            const idVariante = parseInt(document.getElementById("mov-produto").value);
+            const tipo = document.getElementById("mov-tipo").value;
+            const quantidade = parseInt(document.getElementById("mov-qtd").value);
+            const motivo = document.getElementById("mov-motivo").value;
+
+            const variante = bancoVariantes.find(v => v.id === idVariante);
+
+            if (tipo === "SAÍDA") {
+                // Validação de barreira comercial contra saldo negativo (RF06) [cite: 204]
+                if (quantidade > variante.estoqueAtual) {
+                    mostrarToast(`Erro: Estoque insuficiente! Saldo atual de [${variante.sku}] é ${variante.estoqueAtual} un.`, 'erro');
+                    return;
+                }
+                variante.estoqueAtual -= quantidade; 
+                mostrarToast(`Baixa de ${quantidade} un. realizada com sucesso para [${variante.sku}]!`, 'sucesso');
+            } else {
+                variante.estoqueAtual += quantidade; 
+                mostrarToast(`Entrada de ${quantidade} un. registrada para [${variante.sku}].`, 'sucesso');
+            }
+
+            // Alerta flutuante de estoque mínimo atingido [cite: 189]
+            if (variante.estoqueAtual <= variante.estoqueMinimo) {
+                mostrarToast(`Atenção: O item [${variante.sku}] atingiu o estoque mínimo de segurança!`, 'alerta');
+            }
+
+            const horaAtual = new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+            historicoMovimentacoes.unshift({
+                hour: horaAtual,
+                sku: variante.sku,
+                tipo: tipo,
+                qtd: quantidade,
+                operador: usuariosCadastrados[usuarioLogadoAtivo].nome.split(' ')[0]
+            });
+
+            renderizarHistoricoVisual();
+            renderizarDadosEstoque();
+
+            document.getElementById("mov-qtd").value = 1;
+            document.getElementById("mov-motivo").value = "";
+        }
+
+        // Sistema de Disparo de Toasts Dinâmicos
+        function mostrarToast(mensagem, tipo = 'sucesso') {
+            const container = document.getElementById('toast-container');
+            if (!container) return;
+            
+            const toast = document.createElement('div');
+            
+            let icone = '<i class="fa-solid fa-circle-check"></i>';
+            if (tipo === 'erro') icone = '<i class="fa-solid fa-circle-xmark"></i>';
+            if (tipo === 'alerta') icone = '<i class="fa-solid fa-triangle-exclamation"></i>';
+
+            toast.className = `toast toast-${tipo}`;
+            toast.innerHTML = `${icone} <span>${mensagem}</span>`;
+
+            container.appendChild(toast);
+
+            setTimeout(() => {
+                toast.style.animation = 'fadeOut 0.4s ease forwards';
+                setTimeout(() => toast.remove(), 400);
+            }, 4500);
+        }
+
+        function renderizarHistoricoVisual() {
+            const corpoHistorico = document.querySelector("#tabela-historico tbody");
+            corpoHistorico.innerHTML = "";
+
+            historicoMovimentacoes.forEach(mov => {
+                const estilizarEstilo = mov.tipo === "SAÍDA" ? "style='color: #C62828; font-weight: bold;'" : "style='color: #2E7D32; font-weight: bold;'";
+                corpoHistorico.innerHTML += `
+                    <tr>
+                        <td>${mov.hour}</td>
+                        <td><code>${mov.sku}</code></td>
+                        <td ${estilizarEstilo}>${mov.tipo}</td>
+                        <td>${mov.qtd} un</td>
+                        <td>${mov.operador}</td>
+                    </tr>
+                `;
+            });
+        }
+
+        function atualizarDadosPerfil(login) {
+            const dados = usuariosCadastrados[login];
+            const partesNome = dados.nome.split(' ');
+            const iniciais = (partesNome[0][0] + (partesNome.length > 1 ? partesNome[partesNome.length - 1][0] : '')).toUpperCase();
+
+            document.querySelector('.avatar-bolinha').innerText = iniciais;
+            document.querySelector('.nome-usuario').innerText = partesNome[0] + " " + (partesNome.length > 1 ? partesNome[partesNome.length - 1] : '');
+            document.querySelector('.cargo-usuario').innerText = dados.cargo;
+
+            document.querySelector('.avatar-grande').innerText = iniciais;
+            document.querySelector('.perfil-titulo-dados h3').innerText = dados.nome;
+            document.querySelector('.badge-perfil').innerText = `BV: ${dados.cargo}`;
+            document.querySelector('.perfil-titulo-dados strong').innerText = dados.matricula;
+
+            const inputs = document.querySelectorAll('.perfil-form-dados input');
+            inputs[0].value = dados.nome;
+            inputs[1].value = dados.cpf;
+            inputs[2].value = login;
+        }
+
+        function fazerLogout() {
+            document.getElementById('painel-sistema').style.display = 'none';
+            document.getElementById('tela-login').style.display = 'flex';
+            document.getElementById('form-login').reset();
+            document.getElementById('erro-login').innerText = "";
+        }
+
+        function alternarTela(nomeTela) {
+            const telas = document.querySelectorAll('.tela-conteudo');
+            telas.forEach(tela => tela.style.display = 'none');
+            
+            const todosItensMenu = document.querySelectorAll('.sidebar li');
+            todosItensMenu.forEach(item => item.classList.remove('active'));
+            document.getElementById('menu-perfil').classList.remove('perfil-ativo');
+
+            document.getElementById(`visao-${nomeTela}`).style.display = 'block';
+
+            if(nomeTela === 'perfil') {
+                document.getElementById('menu-perfil').classList.add('perfil-ativo');
+            } else {
+                const elementoMenu = document.getElementById(`menu-${nomeTela}`);
+                if(elementoMenu) elementoMenu.classList.add('active');
+            }
+        }
+    </script>
+</body>
+</html>
