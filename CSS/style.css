@@ -1,7 +1,6 @@
 /* ==========================================================================
-   1. TIPOGRAFIA OFICIAL DO PROJETO (Didot & News Gothic MT)
+   1. TIPOGRAFIA DO PROJETO (Didot & News Gothic MT)
    ========================================================================== */
-/* Import de fontes alternativas caso o computador não tenha Didot/News Gothic instaladas */
 @import url('https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..900;1,6..96,400..900&family=Public+Sans:wght@300;400;700&display=swap');
 
 * {
@@ -11,9 +10,9 @@
 }
 
 body {
-    background-color: rgb(206, 204, 225); /* O Ambiente: Cor de fundo principal das telas [cite: 238] */
-    font-family: 'News Gothic MT', 'Public Sans', 'Segoe UI', Arial, sans-serif; /* Para textos principais [cite: 113, 120] */
-    color: rgb(9, 3, 59); /* Contraste Extremo: Textos principais [cite: 238] */
+    background-color: rgb(206, 204, 225);
+    font-family: 'News Gothic MT', 'Public Sans', 'Segoe UI', Arial, sans-serif;
+    color: rgb(9, 3, 59);
     overflow-x: hidden;
 }
 
@@ -23,12 +22,12 @@ body {
 }
 
 /* ==========================================================================
-   2. TELA DE LOGIN (SISTEMA SEGURO - RF04)
+   2. TELA DE LOGIN ORIGINAL
    ========================================================================== */
 .login-wrapper {
     width: 100vw;
     height: 100vh;
-    background: radial-gradient(circle at top left, rgb(44, 38, 97), rgb(16, 12, 54)); /* Tons escuros [cite: 231] */
+    background: radial-gradient(circle at top left, rgb(44, 38, 97), rgb(16, 12, 54));
     display: flex;
     align-items: center;
     justify-content: center;
@@ -50,7 +49,7 @@ body {
 }
 
 .login-header h1 {
-    font-family: 'Didot', 'Bodoni Moda', serif; /* Logotipo e Sofisticação [cite: 96, 100, 134] */
+    font-family: 'Didot', 'Bodoni Moda', serif;
     font-size: 36px;
     color: rgb(16, 12, 54);
     letter-spacing: 1px;
@@ -111,13 +110,13 @@ body {
 .btn-login {
     width: 100%;
     padding: 15px;
-    background-color: rgb(44, 38, 97); /* Ação Principal [cite: 238] */
+    background-color: rgb(44, 38, 97);
     color: white;
     border: none;
     border-radius: 8px;
     font-size: 16px;
     font-family: 'News Gothic MT', sans-serif;
-    font-weight: bold; /* Títulos e botões [cite: 104, 110] */
+    font-weight: bold;
     cursor: pointer;
     transition: background 0.2s ease;
     margin-top: 10px;
@@ -136,22 +135,24 @@ body {
 }
 
 /* ==========================================================================
-   3. MENU LATERAL E ESTRUTURA PROFISSIONAL
+   3. MENU LATERAL E COMPORTAMENTOS RETRÁTEIS
    ========================================================================== */
 .sidebar {
     width: 260px;
     height: 100vh;
-    background-color: rgb(16, 12, 54); /* Estrutura: Cabeçalhos e menus laterais [cite: 238] */
+    background-color: rgb(16, 12, 54);
     color: #FFFFFF;
     padding: 30px 15px;
     position: fixed;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1), padding 0.3s ease;
+    z-index: 100;
 }
 
 .sidebar h1 {
-    font-family: 'Didot', 'Bodoni Moda', serif; /* Logotipo da loja [cite: 100] */
+    font-family: 'Didot', 'Bodoni Moda', serif;
     font-size: 32px;
     text-align: center;
     cursor: pointer;
@@ -160,7 +161,7 @@ body {
 }
 
 .metafora-sidebar {
-    color: rgb(137, 132, 182); /* Organização [cite: 238] */
+    color: rgb(137, 132, 182);
     font-size: 11px;
     font-style: italic;
     text-align: center;
@@ -179,8 +180,7 @@ body {
     border-radius: 8px;
     cursor: pointer;
     font-size: 15px;
-    font-family: 'News Gothic MT', sans-serif;
-    font-weight: bold; /* Menus principais [cite: 104, 108] */
+    font-weight: bold;
     transition: all 0.2s ease;
     display: flex;
     align-items: center;
@@ -196,11 +196,65 @@ body {
 
 .sidebar li:hover, 
 .sidebar li.active {
-    background-color: rgb(44, 38, 97); /* Ação Principal [cite: 238] */
+    background-color: rgb(44, 38, 97);
     color: #FFFFFF;
 }
 
-/* LINK DE PERFIL (RODAPÉ DA SIDEBAR) */
+/* Botão redondo de colapso */
+.btn-toggle-sidebar {
+    position: absolute;
+    top: 32px;
+    right: -15px;
+    width: 30px;
+    height: 30px;
+    background-color: rgb(44, 38, 97);
+    color: #FFFFFF;
+    border: 1px solid rgb(206, 204, 225);
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.btn-toggle-sidebar:hover {
+    background-color: rgb(9, 3, 59);
+    transform: scale(1.05);
+}
+
+/* COMPORTAMENTO SIDEBAR FECHADA (COLLAPSED) */
+.sidebar.collapsed {
+    width: 80px;
+    padding: 30px 10px;
+}
+
+/* Esconde a logo da sidebar e slogans internos apenas quando recolhido */
+.sidebar.collapsed h1,
+.sidebar.collapsed .metafora-sidebar,
+.sidebar.collapsed li span,
+.sidebar.collapsed .perfil-link-info,
+.sidebar.collapsed .seta-perfil {
+    display: none !important;
+}
+
+.sidebar.collapsed li {
+    justify-content: center;
+    padding: 12px 0;
+}
+
+.sidebar.collapsed li i {
+    margin-right: 0;
+    font-size: 18px;
+}
+
+.sidebar.collapsed .perfil-link-wrapper {
+    justify-content: center;
+    padding: 5px 0;
+}
+
+/* Rodapé do Perfil */
 .sidebar-rodape {
     border-top: 1px solid rgba(206, 204, 225, 0.15);
     padding-top: 15px;
@@ -224,7 +278,7 @@ body {
     width: 40px;
     height: 40px;
     border-radius: 50%;
-    background-color: rgb(137, 132, 182); /* Organização [cite: 238] */
+    background-color: rgb(137, 132, 182);
     color: rgb(16, 12, 54);
     font-weight: bold;
     display: flex;
@@ -258,22 +312,57 @@ body {
 }
 
 /* ==========================================================================
-   4. CONTEÚDO CENTRAL E PAINÉIS
+   4. CONTEÚDO PRINCIPAL E TÍTULO CONDICIONAL (DASHBOARD)
    ========================================================================== */
 .content {
+    margin-left: 80px;
+    width: calc(100% - 80px);
+    padding: 40px;
+    transition: margin-left 0.3s cubic-bezier(0.4, 0, 0.2, 1), width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Quando abrir o menu lateral, empurra a tela */
+.sidebar:not(.collapsed) + .content {
     margin-left: 260px;
     width: calc(100% - 260px);
-    padding: 40px;
+}
+
+/* ESTILO DO NOVO TÍTULO SUPERIOR CENTRALIZADO */
+.header-central {
+    text-align: center;
+    margin-bottom: 40px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid rgba(16, 12, 54, 0.1);
+    transition: all 0.3s ease;
+}
+
+.header-central h1 {
+    font-family: 'Didot', 'Bodoni Moda', serif;
+    font-size: 42px;
+    color: rgb(16, 12, 54);
+    letter-spacing: 2px;
+}
+
+.header-central p {
+    font-size: 14px;
+    color: rgb(84, 78, 139);
+    font-style: italic;
+    margin-top: 5px;
+}
+
+/* A MÁGICA: Esconde o título do topo se a sidebar NÃO estiver colapsada (tiver aberta) */
+.sidebar:not(.collapsed) + .content .header-central {
+    display: none;
 }
 
 header h2 {
-    font-family: 'Didot', 'Bodoni Moda', serif; /* Títulos principais [cite: 101] */
-    color: rgb(9, 3, 59); /* Contraste Extremo [cite: 238] */
+    font-family: 'Didot', 'Bodoni Moda', serif;
+    color: rgb(9, 3, 59);
     font-size: 38px;
 }
 
 header p {
-    color: rgb(84, 78, 139); /* Interação [cite: 238] */
+    color: rgb(84, 78, 139);
     font-size: 15px;
     margin: 8px 0 30px;
 }
@@ -315,10 +404,10 @@ header p {
 
 .card.alerta-critico {
     background-color: #FFFDEB;
-    border-left: 5px solid #FEC100; /* Âmbar Restrito para Interrupções [cite: 233] */
+    border-left: 5px solid #FEC100;
 }
 
-/* DASHBOARD GRID AND TABLES */
+/* GRIDS E COMPONENTES FINANCEIROS */
 .dashboard-grid {
     display: flex;
     gap: 20px;
@@ -334,10 +423,14 @@ header p {
 .estoque { flex: 1; }
 
 .fake-chart {
-    height: 230px;
+    height: 240px;
     background: linear-gradient(to top, rgb(206, 204, 225), #FDFDFF);
     border-radius: 8px;
     border: 1px dashed rgb(137, 132, 182);
+    display: flex;
+    justify-content: space-around;
+    align-items: flex-end;
+    padding: 20px 30px;
 }
 
 /* TABELAS */
@@ -351,7 +444,7 @@ th, td {
     padding: 12px; 
     font-size: 14px; 
     text-align: left; 
-    font-family: 'News Gothic MT', sans-serif; /* Dados e descrições [cite: 113, 122, 123] */
+    font-family: 'News Gothic MT', sans-serif;
 }
 
 th { 
@@ -364,22 +457,55 @@ td {
     border-bottom: 1px solid rgb(206, 204, 225); 
 }
 
-/* Mudança visual instantânea para linhas em perigo (Acento Âmbar) */
 .linha-alerta td { 
     background-color: rgba(254, 193, 0, 0.12); 
     color: #5c4600; 
     font-weight: bold;
 }
 
-/* ==========================================================================
-   5. TELA DE PERFIL (MÓDULO DO USUÁRIO - RF04)
-   ========================================================================== */
+/* CONTAINER DE CADASTROS */
 .perfil-container-bloco {
     background: #FFFFFF;
     border-radius: 16px;
     padding: 35px;
     box-shadow: 0 4px 15px rgba(16, 12, 54, 0.05);
+    margin-bottom: 25px;
 }
+
+.perfil-container-bloco h3 {
+    font-size: 16px;
+    color: rgb(16, 12, 54);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 15px;
+    border-bottom: 1px dashed rgb(206, 204, 225);
+    padding-bottom: 5px;
+}
+
+.grupo-campo {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.grupo-campo label {
+    font-size: 13px;
+    font-weight: bold;
+    color: rgb(84, 78, 139);
+}
+
+.grupo-campo input, .grupo-campo select {
+    padding: 12px;
+    border: 1px solid rgb(206, 204, 225);
+    border-radius: 6px;
+    background-color: #F8F8FC;
+    color: rgb(9, 3, 59);
+    font-size: 15px;
+    outline: none;
+}
+
+.grupo-campo input { cursor: text; }
+.grupo-campo select { cursor: pointer; }
 
 .perfil-header-interno {
     display: flex;
@@ -403,16 +529,8 @@ td {
     font-weight: bold;
 }
 
-.perfil-titulo-dados h3 {
-    font-size: 24px;
-    color: rgb(9, 3, 59);
-}
-
-.perfil-titulo-dados p {
-    font-size: 13px;
-    color: rgb(84, 78, 139);
-    margin-top: 5px;
-}
+.perfil-titulo-dados h3 { font-size: 24px; color: rgb(9, 3, 59); border-bottom: none; margin-bottom: 0; padding-bottom: 0; text-transform: none; }
+.perfil-titulo-dados p { font-size: 13px; color: rgb(84, 78, 139); margin-top: 5px; }
 
 .badge-perfil {
     background-color: rgb(44, 38, 97);
@@ -437,71 +555,13 @@ td {
     transition: all 0.2s ease;
 }
 
-.btn-logout:hover {
-    background-color: #C62828;
-    color: #FFFFFF;
-}
-
-.perfil-form-dados h3 {
-    font-size: 16px;
-    color: rgb(16, 12, 54);
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    margin-bottom: 20px;
-}
-
-.grid-inputs {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-    gap: 20px;
-}
-
-.grupo-campo {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-}
-
-.grupo-campo label {
-    font-size: 13px;
-    font-weight: bold;
-    color: rgb(84, 78, 139);
-}
-
-.grupo-campo input {
-    padding: 12px;
-    border: 1px solid rgb(206, 204, 225);
-    border-radius: 6px;
-    background-color: #F8F8FC;
-    color: rgb(9, 3, 59);
-    font-size: 15px;
-    cursor: not-allowed;
-}
+.btn-logout:hover { background-color: #C62828; color: #FFFFFF; }
+.grid-inputs { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px; }
+.perfil-form-dados h3 { font-size: 16px; color: rgb(16, 12, 54); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 20px; border-bottom: none; }
+code { background-color: #F0EDF8; padding: 2px 6px; border-radius: 4px; font-family: monospace; font-weight: bold; color: rgb(44, 38, 97); }
 
 /* ==========================================================================
-   6. GRID DE MOVIMENTAÇÃO (ESTOQUE)
-   ========================================================================== */
-.grupo-campo select {
-    padding: 12px;
-    border: 1px solid rgb(206, 204, 225);
-    border-radius: 6px;
-    background-color: #F8F8FC;
-    color: rgb(9, 3, 59);
-    font-size: 15px;
-    outline: none;
-}
-
-code {
-    background-color: #F0EDF8;
-    padding: 2px 6px;
-    border-radius: 4px;
-    font-family: monospace;
-    font-weight: bold;
-    color: rgb(44, 38, 97);
-}
-
-/* ==========================================================================
-   7. FLUTUANTES (TOAST NOTIFICATIONS)
+   5. NOTIFICAÇÕES 
    ========================================================================== */
 .toast-container {
     position: fixed;
@@ -531,18 +591,10 @@ code {
 
 .toast-sucesso { border-left-color: rgb(44, 38, 97); }
 .toast-sucesso i { color: rgb(44, 38, 97); }
-
 .toast-alerta { border-left-color: #FEC100; background-color: #FFFDF0; }
 .toast-alerta i { color: #FEC100; }
-
 .toast-erro { border-left-color: #C62828; background-color: #FFF2F2; }
 .toast-erro i { color: #C62828; }
 
-@keyframes slideIn {
-    from { transform: translateX(100%); opacity: 0; }
-    to { transform: translateX(0); opacity: 1; }
-}
-
-@keyframes fadeOut {
-    to { transform: translateY(-10px); opacity: 0; }
-}
+@keyframes slideIn { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+@keyframes fadeOut { to { transform: translateY(-10px); opacity: 0; } }

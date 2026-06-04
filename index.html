@@ -22,7 +22,7 @@
                     <label for="usuario">Usuário / Login</label>
                     <div class="input-icone">
                         <i class="fa-solid fa-user"></i>
-                        <input type="text" id="usuario" placeholder="Ex: fernanda.chen" required>
+                        <input type="text" id="usuario" placeholder="Digite seu usuário" required>
                     </div>
                 </div>
                 <div class="campo-login">
@@ -40,26 +40,30 @@
 
     <div id="painel-sistema" class="container" style="display: none;">
 
-        <aside class="sidebar">
+        <aside class="sidebar collapsed" id="sidebar">
+            <button class="btn-toggle-sidebar" onclick="toggleSidebar()">
+                <i class="fa-solid fa-chevron-right" id="sidebar-icon"></i>
+            </button>
+
             <div class="sidebar-topo">
                 <h1 onclick="alternarTela('dashboard')">ModaFácil</h1>
                 <p class="metafora-sidebar">O estoque na palma da mão, a venda num clique.</p>
                 
                 <ul>
                     <li id="menu-dashboard" class="active" onclick="alternarTela('dashboard')">
-                        <i class="fa-solid fa-house"></i> Dashboard
+                        <i class="fa-solid fa-house"></i> <span>Dashboard</span>
                     </li>
                     <li id="menu-produtos" onclick="alternarTela('produtos')">
-                        <i class="fa-solid fa-shirt"></i> Produtos
+                        <i class="fa-solid fa-shirt"></i> <span>Produtos</span>
                     </li>
                     <li id="menu-estoque" onclick="alternarTela('estoque')">
-                        <i class="fa-solid fa-box"></i> Estoque
+                        <i class="fa-solid fa-box"></i> <span>Estoque</span>
                     </li>
                     <li id="menu-vendas" onclick="alternarTela('vendas')">
-                        <i class="fa-solid fa-cart-shopping"></i> Vendas
+                        <i class="fa-solid fa-cart-shopping"></i> <span>Vendas</span>
                     </li>
                     <li id="menu-relatorios" onclick="alternarTela('relatorios')">
-                        <i class="fa-solid fa-chart-line"></i> Relatórios
+                        <i class="fa-solid fa-chart-line"></i> <span>Relatórios</span>
                     </li>
                 </ul>
             </div>
@@ -78,6 +82,11 @@
 
         <main class="content">
 
+            <div class="header-central">
+                <h1>ModaFácil</h1>
+                <p>O estoque na palma da mão, a venda num clique.</p>
+            </div>
+
             <div id="visao-dashboard" class="tela-conteudo">
                 <header>
                     <h2>Dashboard</h2>
@@ -87,11 +96,11 @@
                 <section class="cards">
                     <div class="card destaque">
                         <h3>Produtos</h3>
-                        <span id="card-total-produtos">150</span>
+                        <span id="card-total-produtos">0</span>
                     </div>
                     <div class="card">
                         <h3>Vendas Hoje</h3>
-                        <span>23</span>
+                        <span id="card-vendas-hoje">0</span>
                     </div>
                     <div class="card alerta-critico">
                         <h3>Estoque Baixo</h3>
@@ -105,8 +114,8 @@
 
                 <section class="dashboard-grid">
                     <div class="grafico">
-                        <h3>Vendas dos Últimos 7 Dias</h3>
-                        <div class="fake-chart"></div>
+                        <h3>Faturamento por Categoria (R$)</h3>
+                        <div class="fake-chart" id="dashboard-chart-container"></div>
                     </div>
 
                     <div class="estoque">
@@ -115,12 +124,11 @@
                             <thead>
                                 <tr>
                                     <th>Produto</th>
-                                    <th>Tamanho</th>
+                                    <th>SKU</th>
                                     <th>Qtd</th>
                                 </tr>
                             </thead>
-                            <tbody>
-                                </tbody>
+                            <tbody></tbody>
                         </table>
                     </div>
                 </section>
@@ -133,6 +141,40 @@
                 </header>
 
                 <div class="perfil-container-bloco">
+                    <h3>Cadastrar Nova Variante Comercial</h3>
+                    <form id="form-cadastro-produto" onsubmit="cadastrarVariante(event)" style="margin-top: 15px; display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px;">
+                        <div class="grupo-campo">
+                            <label>Nome do Produto</label>
+                            <input type="text" id="cad-nome" placeholder="Ex: Camiseta Polo" required>
+                        </div>
+                        <div class="grupo-campo">
+                            <label>Tipo/Categoria</label>
+                            <select id="cad-tipo" required>
+                                <option value="Roupa">Roupa</option>
+                                <option value="Calçado">Calçado</option>
+                                <option value="Acessório">Acessório</option>
+                            </select>
+                        </div>
+                        <div class="grupo-campo">
+                            <label>Atributos / Especificação</label>
+                            <input type="text" id="cad-espec" placeholder="Ex: Cor: Preta / Tam: G" required>
+                        </div>
+                        <div class="grupo-campo">
+                            <label>Estoque Mínimo</label>
+                            <input type="number" id="cad-minimo" min="1" value="3" required>
+                        </div>
+                        <div class="grupo-campo">
+                            <label>Estoque Inicial</label>
+                            <input type="number" id="cad-atual" min="0" value="10" required>
+                        </div>
+                        <div class="grupo-campo" style="justify-content: flex-end;">
+                            <button type="submit" class="btn-login" style="margin-top: 0; padding: 12px;">Salvar Variante</button>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="perfil-container-bloco">
+                    <h3>Variantes Registradas no Sistema</h3>
                     <table id="tabela-lista-produtos">
                         <thead>
                             <tr>
@@ -145,8 +187,7 @@
                                 <th>Status</th>
                             </tr>
                         </thead>
-                        <tbody>
-                            </tbody>
+                        <tbody></tbody>
                     </table>
                 </div>
             </div>
@@ -159,39 +200,37 @@
 
                 <div class="grid-simulacao" style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
                     <div class="perfil-container-bloco">
-                        <h3>Registrar Movimentação</h3>
+                        <h3>Registrar Movimentação Manual</h3>
                         <form id="form-movimentacao" onsubmit="processarMovimentacao(event)" style="margin-top: 20px; display: flex; flex-direction: column; gap: 15px;">
-                            <div class="grupo-campo" style="display: flex; flex-direction: column; gap: 8px;">
-                                <label style="font-size: 13px; font-weight: bold; color: rgb(84, 78, 139);">Selecione a Variante</label>
-                                <select id="mov-produto" required style="padding: 12px; border: 1px solid rgb(206, 204, 225); border-radius: 6px; background-color: #F8F8FC;">
-                                    </select>
+                            <div class="grupo-campo">
+                                <label>Selecione a Variante</label>
+                                <select id="mov-produto" required></select>
                             </div>
 
-                            <div class="grupo-campo" style="display: flex; flex-direction: column; gap: 8px;">
-                                <label style="font-size: 13px; font-weight: bold; color: rgb(84, 78, 139);">Tipo de Operação</label>
-                                <select id="mov-tipo" required style="padding: 12px; border: 1px solid rgb(206, 204, 225); border-radius: 6px; background-color: #F8F8FC;">
-                                    <option value="SAÍDA">SAÍDA (Baixa Automática / Venda)</option>
+                            <div class="grupo-campo">
+                                <label>Tipo de Operação</label>
+                                <select id="mov-tipo" required>
                                     <option value="ENTRADA">ENTRADA (Ajuste / Reposição)</option>
+                                    <option value="SAÍDA">SAÍDA (Saída Manual / Ajuste)</option>
                                 </select>
                             </div>
 
-                            <div class="grupo-campo" style="display: flex; flex-direction: column; gap: 8px;">
-                                <label style="font-size: 13px; font-weight: bold; color: rgb(84, 78, 139);">Quantidade</label>
-                                <input type="number" id="mov-qtd" min="1" value="1" required style="padding: 12px; border: 1px solid rgb(206, 204, 225); border-radius: 6px;">
+                            <div class="grupo-campo">
+                                <label>Quantidade</label>
+                                <input type="number" id="mov-qtd" min="1" value="1" required>
                             </div>
 
-                            <div class="grupo-campo" style="display: flex; flex-direction: column; gap: 8px;">
-                                <label style="font-size: 13px; font-weight: bold; color: rgb(84, 78, 139);">Motivo</label>
-                                <input type="text" id="mov-motivo" placeholder="Ex: Venda no caixa / Devolução" required style="padding: 12px; border: 1px solid rgb(206, 204, 225); border-radius: 6px;">
+                            <div class="grupo-campo">
+                                <label>Motivo</label>
+                                <input type="text" id="mov-motivo" placeholder="Ex: Ajuste de inventário" required>
                             </div>
 
                             <button type="submit" class="btn-login" style="margin-top: 10px;">Confirmar Operação</button>
                         </form>
-                        <div id="erro-movimentacao" class="erro-mensagem" style="color: #D32F2F; font-size: 13px; font-weight: bold; margin-top: 10px;"></div>
                     </div>
 
                     <div class="perfil-container-bloco">
-                        <h3>Histórico Histórico de Movimentações</h3>
+                        <h3>Histórico de Movimentações</h3>
                         <div style="max-height: 310px; overflow-y: auto; margin-top: 15px;">
                             <table id="tabela-historico">
                                 <thead>
@@ -203,10 +242,97 @@
                                         <th>Operador</th>
                                     </tr>
                                 </thead>
-                                <tbody>
-                                    </tbody>
+                                <tbody></tbody>
                             </table>
                         </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="visao-vendas" class="tela-conteudo" style="display: none;">
+                <header>
+                    <h2>Vendas</h2>
+                    <p>Módulo de Balcão e Caixa de Vendas rápidas.</p>
+                </header>
+
+                <div class="grid-simulacao" style="display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 20px;">
+                    <div class="perfil-container-bloco">
+                        <h3>Lançar Item no Checkout</h3>
+                        <form id="form-vendas-checkout" onsubmit="adicionarItemCarrinho(event)" style="margin-top: 20px; display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                            <div class="grupo-campo" style="grid-column: span 2;">
+                                <label>Item Comercial</label>
+                                <select id="venda-produto" required></select>
+                            </div>
+                            <div class="grupo-campo">
+                                <label>Quantidade</label>
+                                <input type="number" id="venda-qtd" min="1" value="1" required>
+                            </div>
+                            <div class="grupo-campo">
+                                <label>Preço Unitário (R$)</label>
+                                <input type="number" id="venda-preco" min="0.01" step="0.01" value="79.90" required>
+                            </div>
+                            <div style="grid-column: span 2; display: flex; gap: 10px;">
+                                <button type="submit" class="btn-login" style="background-color: rgb(84, 78, 139);">Adicionar Item</button>
+                                <button type="button" class="btn-logout" onclick="limparCarrinho()" style="margin-left: 0; padding: 12px;">Limpar</button>
+                            </div>
+                        </form>
+                    </div>
+
+                    <div class="perfil-container-bloco" style="display: flex; flex-direction: column; justify-content: space-between;">
+                        <div>
+                            <h3>Cupom de Venda Atual</h3>
+                            <div id="carrinho-lista" style="margin-top: 15px; max-height: 180px; overflow-y: auto; font-family: monospace; font-size: 13px; border: 1px dashed rgb(206, 204, 225); padding: 10px; background: #FAF9FF;">
+                                Carrinho vazio.
+                            </div>
+                        </div>
+                        <div style="margin-top: 20px; border-top: 2px solid rgb(206, 204, 225); padding-top: 15px;">
+                            <div style="display: flex; justify-content: space-between; font-size: 18px; font-weight: bold; margin-bottom: 15px;">
+                                <span>TOTAL:</span>
+                                <span id="checkout-total-venda">R$ 0,00</span>
+                            </div>
+                            <button class="btn-login" onclick="finalizarVendaCaixa()">Finalizar e Emitir Baixa</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="visao-relatorios" class="tela-conteudo" style="display: none;">
+                <header>
+                    <h2>Relatórios</h2>
+                    <p>Módulo Estatístico, Comercial e de Auditoria de Saídas.</p>
+                </header>
+
+                <div class="cards" style="margin-bottom: 25px;">
+                    <div class="card" style="border-left-color: #2E7D32;">
+                        <h3>Faturamento Bruto</h3>
+                        <span id="rel-faturamento-total" style="color: #2E7D32;">R$ 0,00</span>
+                    </div>
+                    <div class="card" style="border-left-color: rgb(44, 38, 97);">
+                        <h3>Total Peças Vendidas</h3>
+                        <span id="rel-pecas-totais">0 un</span>
+                    </div>
+                    <div class="card" style="border-left-color: #FEC100;">
+                        <h3>Ticket Médio</h3>
+                        <span id="rel-ticket-medio">R$ 0,00</span>
+                    </div>
+                </div>
+
+                <div class="perfil-container-bloco">
+                    <h3>Log de Cupons Emitidos</h3>
+                    <div style="overflow-x: auto; margin-top: 15px;">
+                        <table id="tabela-relatorio-vendas">
+                            <thead>
+                                <tr>
+                                    <th>ID Venda</th>
+                                    <th>Hora</th>
+                                    <th>Itens Vendidos</th>
+                                    <th>Qtd Total</th>
+                                    <th>Total Geral</th>
+                                    <th>Operador</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
                     </div>
                 </div>
             </div>
@@ -252,14 +378,10 @@
                 </div>
             </div>
 
-            <div id="visao-vendas" class="tela-conteudo" style="display: none;"><header><h2>Vendas</h2><p>Módulo de Balcão e Caixa de Vendas.</p></header></div>
-            <div id="visao-relatorios" class="tela-conteudo" style="display: none;"><header><h2>Relatórios</h2><p>Módulo Estatístico e Comercial.</p></header></div>
-
         </main>
     </div>
 
     <script>
-        // Banco de dados simulado com as usuárias oficiais da documentação [cite: 167]
         const usuariosCadastrados = {
             "fernanda.chen": { nome: "Fernanda Chen", cpf: "000.000.000-00", cargo: "3058964", matricula: "#001" },
             "milena.cristina": { nome: "Milena Cristina dos Santos Oliveira Lima", cpf: "111.111.111-11", cargo: "3058085", matricula: "#002" },
@@ -267,29 +389,25 @@
             "yona.maia": { nome: "Yoná Maia Menezes de Oliveira", cpf: "333.333.333-33", cargo: "3057704", matricula: "#004" }
         };
 
-        // Estado das Variantes Comerciais (Projeto Lógico) [cite: 18, 25, 32, 39]
-        let bancoVariantes = [
-            { id: 1, produto: "Camiseta Azul", tipo: "Roupa", sku: "ROU-CAM-AZ-M", espec: "Cor: Azul / Tam: M", estoqueMinimo: 5, estoqueAtual: 2 },
-            { id: 2, produto: "Calça Jeans", tipo: "Roupa", sku: "ROU-JNS-PR-38", espec: "Cor: Preto / Tam: 38", estoqueMinimo: 3, estoqueAtual: 1 },
-            { id: 3, produto: "Vestido Vintage", tipo: "Roupa", sku: "ROU-VES-VR-P", espec: "Cor: Verde / Tam: P", estoqueMinimo: 2, estoqueAtual: 4 },
-            { id: 4, produto: "Sapato Scarpin", tipo: "Calçado", sku: "CAL-SCA-PT-37", espec: "Tam: 37", estoqueMinimo: 3, estoqueAtual: 7 }
-        ];
-
+        let bancoVariantes = [];
         let historicoMovimentacoes = [];
+        let logVendasCupons = [];
+        let carrinhoVendaAtual = [];
         let usuarioLogadoAtivo = "";
+        let contadorVendasID = 1000;
 
         function autenticarUsuario(event) {
             event.preventDefault();
             const usuarioDigitado = document.getElementById('usuario').value.trim().toLowerCase();
             const senhaDigitada = document.getElementById('senha').value;
             const erroBox = document.getElementById('erro-login');
-            
             const senhaPadrao = "moda123";
 
             if (usuariosCadastrados[usuarioDigitado] && senhaDigitada === senhaPadrao) {
                 usuarioLogadoAtivo = usuarioDigitado;
                 atualizarDadosPerfil(usuarioDigitado);
                 renderizarDadosEstoque();
+                renderDadosGeraisFaturamentoGrafico();
 
                 document.getElementById('tela-login').style.display = 'none';
                 document.getElementById('painel-sistema').style.display = 'flex';
@@ -300,17 +418,51 @@
             }
         }
 
+        function gerarSKU(nome, tipo, espec) {
+            const prefixoTipo = tipo.substring(0, 3).toUpperCase();
+            const prefixoNome = nome.replace(/[^a-zA-Z]/g, "").substring(0, 3).toUpperCase();
+            const partesEspec = espec.split('/');
+            const extrairTamanho = partesEspec.length > 1 ? partesEspec.pop().split(':').pop().trim().toUpperCase() : "UN";
+            return `${prefixoTipo}-${prefixoNome}-${extrairTamanho.replace(/[^a-zA-Z0-9]/g, "")}`;
+        }
+
+        function cadastrarVariante(event) {
+            event.preventDefault();
+            const nome = document.getElementById('cad-nome').value.trim();
+            const tipo = document.getElementById('cad-tipo').value;
+            const espec = document.getElementById('cad-espec').value.trim();
+            const minimo = parseInt(document.getElementById('cad-minimo').value);
+            const atual = parseInt(document.getElementById('cad-atual').value);
+
+            const novoId = bancoVariantes.length > 0 ? Math.max(...bancoVariantes.map(v => v.id)) + 1 : 1;
+            const skuGerado = gerarSKU(nome, tipo, espec);
+
+            bancoVariantes.push({
+                id: novoId, produto: nome, tipo: tipo, sku: skuGerado, espec: espec, estoqueMinimo: minimo, estoqueAtual: atual
+            });
+
+            mostrarToast(`Variante [${skuGerado}] cadastrada com sucesso!`, 'sucesso');
+            document.getElementById('form-cadastro-produto').reset();
+            document.getElementById('cad-minimo').value = 3;
+            document.getElementById('cad-atual').value = 10;
+            
+            renderizarDadosEstoque();
+            renderDadosGeraisFaturamentoGrafico();
+        }
+
         function renderizarDadosEstoque() {
             let totalItensVariantes = bancoVariantes.length;
             let contadorEstoqueBaixo = 0;
 
             const tabelaDashboardCorpo = document.querySelector("#tabela-dashboard-alertas tbody");
             const tabelaProdutosCorpo = document.querySelector("#tabela-lista-produtos tbody");
-            const selectProdutos = document.getElementById("mov-produto");
+            const selectProdutosManual = document.getElementById("mov-produto");
+            const selectProdutosVendas = document.getElementById("venda-produto");
 
             tabelaDashboardCorpo.innerHTML = "";
             tabelaProdutosCorpo.innerHTML = "";
-            selectProdutos.innerHTML = "";
+            selectProdutosManual.innerHTML = "";
+            selectProdutosVendas.innerHTML = "";
 
             bancoVariantes.forEach(item => {
                 const estaBaixo = item.estoqueAtual <= item.estoqueMinimo;
@@ -319,7 +471,6 @@
                 const classeLinhaAlerta = estaBaixo ? "linha-alerta" : "";
                 const statusTexto = estaBaixo ? "⚠️ CRÍTICO" : "✓ ESTÁVEL";
 
-                // 1. Aba Produtos [cite: 208, 209]
                 tabelaProdutosCorpo.innerHTML += `
                     <tr class="${classeLinhaAlerta}">
                         <td><strong>${item.produto}</strong></td>
@@ -332,21 +483,18 @@
                     </tr>
                 `;
 
-                // 2. Tabela Resumo do Dashboard [cite: 210]
                 if (estaBaixo) {
                     tabelaDashboardCorpo.innerHTML += `
                         <tr class="linha-alerta">
                             <td>${item.produto}</td>
-                            <td>${item.sku.split('-').pop()}</td>
-                            <td><strong>${item.estoqueAtual}</strong></td>
+                            <td><code>${item.sku}</code></td>
+                            <td><strong>${item.estoqueAtual} un</strong></td>
                         </tr>
                     `;
                 }
 
-                // 3. Seletor de Opções
-                selectProdutos.innerHTML += `
-                    <option value="${item.id}">${item.produto} [${item.sku}] (Atual: ${item.estoqueAtual} un)</option>
-                `;
+                selectProdutosManual.innerHTML += `<option value="${item.id}">${item.produto} [${item.sku}] (Atual: ${item.estoqueAtual} un)</option>`;
+                selectProdutosVendas.innerHTML += `<option value="${item.id}">${item.produto} [${item.sku}] (Saldo: ${item.estoqueAtual})</option>`;
             });
 
             if (contadorEstoqueBaixo === 0) {
@@ -367,78 +515,185 @@
 
             const variante = bancoVariantes.find(v => v.id === idVariante);
 
-            if (tipo === "SAÍDA") {
-                // Validação de barreira comercial contra saldo negativo (RF06) [cite: 204]
-                if (quantidade > variante.estoqueAtual) {
-                    mostrarToast(`Erro: Estoque insuficiente! Saldo atual de [${variante.sku}] é ${variante.estoqueAtual} un.`, 'erro');
-                    return;
-                }
-                variante.estoqueAtual -= quantidade; 
-                mostrarToast(`Baixa de ${quantidade} un. realizada com sucesso para [${variante.sku}]!`, 'sucesso');
-            } else {
-                variante.estoqueAtual += quantidade; 
-                mostrarToast(`Entrada de ${quantidade} un. registrada para [${variante.sku}].`, 'sucesso');
+            if (tipo === "SAÍDA" && quantidade > variante.estoqueAtual) {
+                mostrarToast(`Erro: Saldo insuficiente em estoque de [${variante.sku}].`, 'erro');
+                return;
             }
 
-            // Alerta flutuante de estoque mínimo atingido [cite: 189]
-            if (variante.estoqueAtual <= variante.estoqueMinimo) {
-                mostrarToast(`Atenção: O item [${variante.sku}] atingiu o estoque mínimo de segurança!`, 'alerta');
+            if (tipo === "SAÍDA") {
+                variante.estoqueAtual -= quantidade;
+                mostrarToast(`Saída manual efetuada para [${variante.sku}].`, 'sucesso');
+            } else {
+                variante.estoqueAtual += quantidade;
+                mostrarToast(`Entrada manual computada para [${variante.sku}].`, 'sucesso');
             }
 
             const horaAtual = new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
             historicoMovimentacoes.unshift({
-                hour: horaAtual,
-                sku: variante.sku,
-                tipo: tipo,
-                qtd: quantidade,
-                operador: usuariosCadastrados[usuarioLogadoAtivo].nome.split(' ')[0]
+                hour: horaAtual, sku: variante.sku, tipo: tipo, qtd: quantidade, operador: usuariosCadastrados[usuarioLogadoAtivo].nome.split(' ')[0]
             });
-
-            renderizarHistoricoVisual();
-            renderizarDadosEstoque();
 
             document.getElementById("mov-qtd").value = 1;
             document.getElementById("mov-motivo").value = "";
+            
+            renderizarDadosEstoque();
+            renderizarHistoricoVisual();
         }
 
-        // Sistema de Disparo de Toasts Dinâmicos
+        function renderizarHistoricoVisual() {
+            const corpoHistorico = document.querySelector("#tabela-historico tbody");
+            corpoHistorico.innerHTML = "";
+            historicoMovimentacoes.forEach(mov => {
+                const corEstilo = mov.tipo.includes("SAÍDA") || mov.tipo.includes("BAIXA") ? "style='color: #C62828; font-weight: bold;'" : "style='color: #2E7D32; font-weight: bold;'";
+                corpoHistorico.innerHTML += `<tr><td>${mov.hour}</td><td><code>${mov.sku}</code></td><td ${corEstilo}>${mov.tipo}</td><td>${mov.qtd} un</td><td>${mov.operador}</td></tr>`;
+            });
+        }
+
+        function adicionarItemCarrinho(event) {
+            event.preventDefault();
+            const idVariante = parseInt(document.getElementById("venda-produto").value);
+            const qtd = parseInt(document.getElementById("venda-qtd").value);
+            const preco = parseFloat(document.getElementById("venda-preco").value);
+
+            const variante = bancoVariantes.find(v => v.id === idVariante);
+            const jaNoCarrinho = carrinhoVendaAtual.filter(i => i.id === idVariante).reduce((acc, c) => acc + c.qtd, 0);
+
+            if ((qtd + jaNoCarrinho) > variante.estoqueAtual) {
+                mostrarToast(`Erro: Saldo indisponível! Estoque atual é de apenas ${variante.estoqueAtual} un.`, 'erro');
+                return;
+            }
+
+            carrinhoVendaAtual.push({
+                id: variante.id, produto: variante.produto, sku: variante.sku, tipo: variante.tipo, qtd: qtd, precoUnitario: preco, subtotal: qtd * preco
+            });
+
+            mostrarToast(`Item adicionado ao carrinho provisório.`, 'sucesso');
+            renderizarCarrinhoVisual();
+        }
+
+        function renderizarCarrinhoVisual() {
+            const caixaVisual = document.getElementById("carrinho-lista");
+            const txtTotal = document.getElementById("checkout-total-venda");
+
+            if (carrinhoVendaAtual.length === 0) {
+                caixaVisual.innerHTML = "Carrinho vazio.";
+                txtTotal.innerText = "R$ 0,00";
+                return;
+            }
+
+            let htmlAcumulado = "";
+            let totalGeral = 0;
+            carrinhoVendaAtual.forEach((item, index) => {
+                totalGeral += item.subtotal;
+                htmlAcumulado += `[${index+1}] ${item.produto} (${item.sku})<br> ${item.qtd}un x R$ ${item.precoUnitario.toFixed(2)} = R$ ${item.subtotal.toFixed(2)}<br>-------------------------<br>`;
+            });
+            caixaVisual.innerHTML = htmlAcumulado;
+            txtTotal.innerText = `R$ ${totalGeral.toFixed(2)}`;
+        }
+
+        function limparCarrinho() {
+            carrinhoVendaAtual = [];
+            renderizarCarrinhoVisual();
+        }
+
+        function finalizarVendaCaixa() {
+            if (carrinhoVendaAtual.length === 0) {
+                mostrarToast("Checkout vazio.", "erro");
+                return;
+            }
+
+            carrinhoVendaAtual.forEach(item => {
+                const v = bancoVariantes.find(b => b.id === item.id);
+                v.estoqueAtual -= item.qtd;
+                
+                const horaAtual = new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+                historicoMovimentacoes.unshift({
+                    hour: horaAtual, sku: item.sku, tipo: "BAIXA CAIXA", qtd: item.qtd, operador: usuariosCadastrados[usuarioLogadoAtivo].nome.split(' ')[0]
+                });
+            });
+
+            const horaVenda = new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+            const totalItensPecas = carrinhoVendaAtual.reduce((a, c) => a + c.qtd, 0);
+            const totalPrecoVenda = carrinhoVendaAtual.reduce((a, c) => a + c.subtotal, 0);
+            const listaTextualItens = carrinhoVendaAtual.map(i => `${i.produto} (${i.qtd}un)`).join(', ');
+
+            contadorVendasID++;
+            logVendasCupons.unshift({
+                id: contadorVendasID, hora: horaVenda, itensTexto: listaTextualItens, qtdPecas: totalItensPecas, totalDinheiro: totalPrecoVenda, operador: usuariosCadastrados[usuarioLogadoAtivo].nome.split(' ')[0], carrinhoDetalhes: [...carrinhoVendaAtual]
+            });
+
+            mostrarToast(`Venda #${contadorVendasID} computada!`, 'sucesso');
+            carrinhoVendaAtual = [];
+            
+            renderizarDadosEstoque();
+            renderizarCarrinhoVisual();
+            renderizarHistoricoVisual();
+            renderDadosGeraisFaturamentoGrafico();
+        }
+
+        function renderDadosGeraisFaturamentoGrafico() {
+            const tabelaRelatorio = document.querySelector("#tabela-relatorio-vendas tbody");
+            tabelaRelatorio.innerHTML = "";
+
+            let faturamentoAcumulado = 0;
+            let pecasVendidasAcumuladas = 0;
+
+            logVendasCupons.forEach(cupom => {
+                faturamentoAcumulado += cupom.totalDinheiro;
+                pecasVendidasAcumuladas += cupom.qtdPecas;
+                tabelaRelatorio.innerHTML += `<tr><td>#${cupom.id}</td><td>${cupom.hora}</td><td>${cupom.itensTexto}</td><td>${cupom.qtdPecas} un</td><td><strong>R$ ${cupom.totalDinheiro.toFixed(2)}</strong></td><td>${cupom.operador}</td></tr>`;
+            });
+
+            const totalCuponsEmitidos = logVendasCupons.length;
+            const ticketMedioCalculado = totalCuponsEmitidos > 0 ? faturamentoAcumulado / totalCuponsEmitidos : 0;
+
+            document.getElementById("rel-faturamento-total").innerText = `R$ ${faturamentoAcumulado.toFixed(2)}`;
+            document.getElementById("rel-pecas-totais").innerText = `${pecasVendidasAcumuladas} un`;
+            document.getElementById("rel-ticket-medio").innerText = `R$ ${ticketMedioCalculado.toFixed(2)}`;
+            document.getElementById("card-vendas-hoje").innerText = totalCuponsEmitidos;
+
+            renderizarGraficoCategoriasDashboard();
+        }
+
+        function renderizarGraficoCategoriasDashboard() {
+            const containerGrafico = document.getElementById("dashboard-chart-container");
+            containerGrafico.innerHTML = "";
+            let faturamentoCategorias = { "Roupa": 0, "Calçado": 0, "Acessório": 0 };
+
+            logVendasCupons.forEach(cupom => {
+                cupom.carrinhoDetalhes.forEach(item => { faturamentoCategorias[item.tipo] += item.subtotal; });
+            });
+
+            const maiorValor = Math.max(...Object.values(faturamentoCategorias), 100);
+
+            Object.keys(faturamentoCategorias).forEach(cat => {
+                const valor = faturamentoCategorias[cat];
+                const pctBarra = (valor / maiorValor) * 100;
+                containerGrafico.innerHTML += `
+                    <div style="display: flex; flex-direction: column; align-items: center; justify-content: flex-end; height: 100%; flex: 1;">
+                        <span style="font-size: 11px; font-weight: bold; margin-bottom: 5px; color: rgb(44, 38, 97);">R$ ${valor.toFixed(2)}</span>
+                        <div style="width: 45px; height: ${Math.max(pctBarra, 5)}%; background: linear-gradient(to top, rgb(16, 12, 54), rgb(84, 78, 139)); border-radius: 4px 4px 0 0; transition: height 0.5s ease;"></div>
+                        <span style="font-size: 12px; font-weight: bold; margin-top: 8px; color: rgb(9, 3, 59);">${cat}</span>
+                    </div>`;
+            });
+        }
+
         function mostrarToast(mensagem, tipo = 'sucesso') {
             const container = document.getElementById('toast-container');
             if (!container) return;
-            
             const toast = document.createElement('div');
-            
             let icone = '<i class="fa-solid fa-circle-check"></i>';
             if (tipo === 'erro') icone = '<i class="fa-solid fa-circle-xmark"></i>';
             if (tipo === 'alerta') icone = '<i class="fa-solid fa-triangle-exclamation"></i>';
 
             toast.className = `toast toast-${tipo}`;
             toast.innerHTML = `${icone} <span>${mensagem}</span>`;
-
             container.appendChild(toast);
 
             setTimeout(() => {
                 toast.style.animation = 'fadeOut 0.4s ease forwards';
                 setTimeout(() => toast.remove(), 400);
             }, 4500);
-        }
-
-        function renderizarHistoricoVisual() {
-            const corpoHistorico = document.querySelector("#tabela-historico tbody");
-            corpoHistorico.innerHTML = "";
-
-            historicoMovimentacoes.forEach(mov => {
-                const estilizarEstilo = mov.tipo === "SAÍDA" ? "style='color: #C62828; font-weight: bold;'" : "style='color: #2E7D32; font-weight: bold;'";
-                corpoHistorico.innerHTML += `
-                    <tr>
-                        <td>${mov.hour}</td>
-                        <td><code>${mov.sku}</code></td>
-                        <td ${estilizarEstilo}>${mov.tipo}</td>
-                        <td>${mov.qtd} un</td>
-                        <td>${mov.operador}</td>
-                    </tr>
-                `;
-            });
         }
 
         function atualizarDadosPerfil(login) {
@@ -449,7 +704,6 @@
             document.querySelector('.avatar-bolinha').innerText = iniciais;
             document.querySelector('.nome-usuario').innerText = partesNome[0] + " " + (partesNome.length > 1 ? partesNome[partesNome.length - 1] : '');
             document.querySelector('.cargo-usuario').innerText = dados.cargo;
-
             document.querySelector('.avatar-grande').innerText = iniciais;
             document.querySelector('.perfil-titulo-dados h3').innerText = dados.nome;
             document.querySelector('.badge-perfil').innerText = `BV: ${dados.cargo}`;
@@ -469,20 +723,28 @@
         }
 
         function alternarTela(nomeTela) {
-            const telas = document.querySelectorAll('.tela-conteudo');
-            telas.forEach(tela => tela.style.display = 'none');
-            
-            const todosItensMenu = document.querySelectorAll('.sidebar li');
-            todosItensMenu.forEach(item => item.classList.remove('active'));
+            document.querySelectorAll('.tela-conteudo').forEach(t => t.style.display = 'none');
+            document.querySelectorAll('.sidebar li').forEach(i => i.classList.remove('active'));
             document.getElementById('menu-perfil').classList.remove('perfil-ativo');
 
             document.getElementById(`visao-${nomeTela}`).style.display = 'block';
-
             if(nomeTela === 'perfil') {
                 document.getElementById('menu-perfil').classList.add('perfil-ativo');
             } else {
-                const elementoMenu = document.getElementById(`menu-${nomeTela}`);
-                if(elementoMenu) elementoMenu.classList.add('active');
+                const el = document.getElementById(`menu-${nomeTela}`);
+                if(el) el.classList.add('active');
+            }
+        }
+
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const icon = document.getElementById('sidebar-icon');
+            sidebar.classList.toggle('collapsed');
+
+            if (sidebar.classList.contains('collapsed')) {
+                icon.className = 'fa-solid fa-chevron-right';
+            } else {
+                icon.className = 'fa-solid fa-chevron-left';
             }
         }
     </script>
