@@ -14,7 +14,10 @@
     <div id="tela-login" class="login-wrapper">
         <div class="login-box">
             <div class="login-header">
-                <h1>ModaFácil</h1>
+                <div class="brand-logo-container">
+                    <img src="img/logo.png" alt="Logo ModaFácil" class="site-logo">
+                    <h1>ModaFácil</h1>
+                </div>
                 <p>Controle de estoque na palma da mão, venda num clique.</p>
             </div>
             <form id="form-login" onsubmit="autenticarUsuario(event)">
@@ -46,7 +49,10 @@
             </button>
 
             <div class="sidebar-topo">
-                <h1 onclick="alternarTela('dashboard')">ModaFácil</h1>
+                <div class="brand-logo-container sidebar-brand" onclick="alternarTela('dashboard')">
+                    <img src="img/logo.png" alt="Logo ModaFácil" class="site-logo inverted-logo">
+                    <h1>ModaFácil</h1>
+                </div>
                 <p class="metafora-sidebar">O estoque na palma da mão, a venda num clique.</p>
                 
                 <ul>
@@ -83,7 +89,10 @@
         <main class="content">
 
             <div class="header-central">
-                <h1>ModaFácil</h1>
+                <div class="brand-logo-container central-brand">
+                    <img src="img/logo.png" alt="Logo ModaFácil" class="site-logo">
+                    <h1>ModaFácil</h1>
+                </div>
                 <p>O estoque na palma da mão, a venda num clique.</p>
             </div>
 
@@ -576,7 +585,7 @@
             const txtTotal = document.getElementById("checkout-total-venda");
 
             if (carrinhoVendaAtual.length === 0) {
-                caixaVisual.innerHTML = "Carrinho vazio.";
+                caVisual.innerHTML = "Carrinho vazio.";
                 txtTotal.innerText = "R$ 0,00";
                 return;
             }

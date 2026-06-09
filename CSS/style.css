@@ -1,5 +1,5 @@
 /* ==========================================================================
-   1. TIPOGRAFIA DO PROJETO (Didot & News Gothic MT)
+   1. TIPOGRAFIA E CONFIGURAÇÕES BASE (Didot & News Gothic MT)
    ========================================================================== */
 @import url('https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..900;1,6..96,400..900&family=Public+Sans:wght@300;400;700&display=swap');
 
@@ -135,7 +135,7 @@ body {
 }
 
 /* ==========================================================================
-   3. MENU LATERAL E COMPORTAMENTOS RETRÁTEIS
+   3. MENU LATERAL E COMPORTAMENTOS RETRÁTEIS (SIDEBAR)
    ========================================================================== */
 .sidebar {
     width: 260px;
@@ -200,10 +200,10 @@ body {
     color: #FFFFFF;
 }
 
-/* Botão redondo de colapso */
+/* Botão redondo de colapso - Ajustado Posição e Z-Index para Clique Perfeito */
 .btn-toggle-sidebar {
     position: absolute;
-    top: 32px;
+    top: 25px;
     right: -15px;
     width: 30px;
     height: 30px;
@@ -215,7 +215,8 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    z-index: 999;
     transition: background-color 0.2s ease, transform 0.2s ease;
 }
 
@@ -224,13 +225,13 @@ body {
     transform: scale(1.05);
 }
 
-/* COMPORTAMENTO SIDEBAR FECHADA (COLLAPSED) */
+/* COMPORTAMENTO DA SIDEBAR RECOLHIDA (COLLAPSED) */
 .sidebar.collapsed {
     width: 80px;
     padding: 30px 10px;
 }
 
-/* Esconde a logo da sidebar e slogans internos apenas quando recolhido */
+/* Oculta textos e elementos internos quando recolhido */
 .sidebar.collapsed h1,
 .sidebar.collapsed .metafora-sidebar,
 .sidebar.collapsed li span,
@@ -312,7 +313,7 @@ body {
 }
 
 /* ==========================================================================
-   4. CONTEÚDO PRINCIPAL E TÍTULO CONDICIONAL (DASHBOARD)
+   4. CONTEÚDO PRINCIPAL E TÍTULO DINÂMICO
    ========================================================================== */
 .content {
     margin-left: 80px;
@@ -321,19 +322,19 @@ body {
     transition: margin-left 0.3s cubic-bezier(0.4, 0, 0.2, 1), width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* Quando abrir o menu lateral, empurra a tela */
+/* Quando abrir a sidebar, empurra o painel de conteúdo */
 .sidebar:not(.collapsed) + .content {
     margin-left: 260px;
     width: calc(100% - 260px);
 }
 
-/* ESTILO DO NOVO TÍTULO SUPERIOR CENTRALIZADO */
+/* ESTILO DO TÍTULO CENTRALIZADO SUPERIOR */
 .header-central {
     text-align: center;
     margin-bottom: 40px;
     padding-bottom: 20px;
     border-bottom: 1px solid rgba(16, 12, 54, 0.1);
-    transition: all 0.3s ease;
+    transition: opacity 0.3s ease;
 }
 
 .header-central h1 {
@@ -350,9 +351,9 @@ body {
     margin-top: 5px;
 }
 
-/* A MÁGICA: Esconde o título do topo se a sidebar NÃO estiver colapsada (tiver aberta) */
+/* Suaviza a exibição do título central caso a sidebar esteja aberta */
 .sidebar:not(.collapsed) + .content .header-central {
-    display: none;
+    opacity: 0.25;
 }
 
 header h2 {
@@ -383,6 +384,13 @@ header p {
     border-left: 5px solid rgb(84, 78, 139);
 }
 
+.card i {
+    font-size: 24px;
+    color: rgb(84, 78, 139);
+    margin-bottom: 10px;
+    display: block;
+}
+
 .card h3 {
     font-size: 13px;
     text-transform: uppercase;
@@ -400,14 +408,14 @@ header p {
     background: linear-gradient(135deg, rgb(44, 38, 97), rgb(84, 78, 139));
     border-left: none;
 }
-.card.destaque h3, .card.destaque span { color: #FFFFFF; }
+.card.destaque h3, .card.destaque span, .card.destaque i { color: #FFFFFF; }
 
 .card.alerta-critico {
     background-color: #FFFDEB;
     border-left: 5px solid #FEC100;
 }
 
-/* GRIDS E COMPONENTES FINANCEIROS */
+/* GRIDS DO PANEL DASHBOARD */
 .dashboard-grid {
     display: flex;
     gap: 20px;
@@ -463,7 +471,7 @@ td {
     font-weight: bold;
 }
 
-/* CONTAINER DE CADASTROS */
+/* CONTAINER DE ELEMENTOS CADASTRAIS */
 .perfil-container-bloco {
     background: #FFFFFF;
     border-radius: 16px;
@@ -561,7 +569,7 @@ td {
 code { background-color: #F0EDF8; padding: 2px 6px; border-radius: 4px; font-family: monospace; font-weight: bold; color: rgb(44, 38, 97); }
 
 /* ==========================================================================
-   5. NOTIFICAÇÕES 
+   5. NOTIFICAÇÕES (TOAST SYSTEM)
    ========================================================================== */
 .toast-container {
     position: fixed;
@@ -598,3 +606,89 @@ code { background-color: #F0EDF8; padding: 2px 6px; border-radius: 4px; font-fam
 
 @keyframes slideIn { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
 @keyframes fadeOut { to { transform: translateY(-10px); opacity: 0; } }
+
+/* ==========================================================================
+   6. IMPLEMENTAÇÃO E INTEGRAÇÃO DA LOGO DA MARCA (CORREÇÃO DE DISTÂNCIA 100px)
+   ========================================================================== */
+
+/* Conector flexível base - Ajustado para alinhar perfeitamente sem esticar */
+.brand-logo-container {
+    display: inline-flex !important; /* Força o bloco a ter apenas o tamanho dos elementos */
+    align-items: center;
+    justify-content: flex-start !important;
+    gap: 12px; /* Distância exata entre o fim da imagem e o começo do texto */
+    margin-bottom: 12px;
+    width: max-content !important; /* Impede que o container ocupe 100% da largura da tela */
+}
+
+/* Tamanho da imagem definido em 100px */
+.site-logo {
+    height: 70px;
+    width: auto;
+    object-fit: contain;
+    display: block;
+    margin: 0 !important; /* Remove qualquer margem padrão da imagem */
+}
+
+/* Alinhamento centralizado exclusivo para o cabeçalho da tela de Login */
+.login-header .brand-logo-container {
+    display: flex !important;
+    justify-content: center !important;
+    margin-bottom: 15px;
+    width: 100% !important; /* No login, o bloco centraliza na caixa */
+}
+
+/* AJUSTE COMPLETO PARA A SIDEBAR (MENU LATERAL) ABERTA */
+.sidebar:not(.collapsed) .sidebar-brand {
+    display: flex !important;
+    align-items: center;
+    justify-content: flex-start !important;
+    padding: 10px 0px;
+    margin-bottom: 20px;
+    width: 100%;
+    cursor: pointer;
+}
+
+/* Garante que o container interno na sidebar fique totalmente colado à esquerda */
+.sidebar:not(.collapsed) .sidebar-brand .brand-logo-container {
+    display: inline-flex !important;
+    justify-content: flex-start !important;
+    gap: 12px; /* Mantém o texto coladinho na logo de 100px */
+    width: max-content !important;
+    margin-bottom: 0;
+}
+
+/* Remove completamente margens e paddings fantasmas do H1 */
+.brand-logo-container h1 {
+    margin: 0 !important;
+    padding: 0 !important;
+    line-height: 1 !important; /* Evita que a altura da linha empurre o texto */
+    white-space: nowrap; /* Garante que o nome não quebre linha */
+}
+
+.sidebar:not(.collapsed) .sidebar-brand h1 {
+    display: block !important;
+    font-size: 26px;
+    color: #FFFFFF;
+}
+
+/* Quando a barra lateral encolher, esconde a logo e o texto */
+.sidebar.collapsed .sidebar-topo .brand-logo-container {
+    display: none !important;
+}
+
+/* Filtro para a logo na barra lateral escura */
+.inverted-logo {
+    filter: brightness(0) invert(1) drop-shadow(0px 0px 1px rgba(206, 204, 225, 0.8));
+    height: 60px; /* Reduzido ligeiramente na sidebar para não quebrar o layout do menu */
+}
+
+/* Centralização do cabeçalho da página principal */
+.central-brand {
+    justify-content: center !important;
+    gap: 15px;
+}
+
+.header-central .site-logo {
+    height: 100px; 
+}
