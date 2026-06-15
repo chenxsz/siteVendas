@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Moda Fácil - Concepção Científica</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="CSS/home.css">
+    
+    <style>
+        .hidden-scroll {
+            opacity: 0 !important;
+            transform: translateY(30px) scale(0.99) !important;
+            transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), 
+                        transform 0.8s cubic-bezier(0.16, 1, 0.3, 1) !important;
+            will-change: transform, opacity;
+        }
+        .show-scroll {
+            opacity: 1 !important;
+            transform: translateY(0) scale(1) !important;
+        }
+    </style>
+</head>
+<body class="bg-ambiente text-estrutura">
+
+    <header class="fixed w-full bg-white text-estrutura shadow-sm z-50 border-b border-gray-100">
+        <div class="max-w-6xl mx-auto px-4 py-4 flex justify-between items-center">
+            <a href="#" class="flex items-center space-x-2">
+                <img src="img/logo.png" alt="Logo" class="h-9 w-auto error-fallback">
+                <span class="text-2xl font-bold font-didot tracking-wide text-estrutura">Moda<span class="text-interacao">Fácil</span></span>
+            </a>
+            
+            <nav class="hidden md:flex space-x-8 font-medium text-sm">
+                <a href="#arquitetura" class="hover:text-interacao transition">Concepção Lógica</a>
+                <a href="#ihc" class="hover:text-interacao transition">Diretrizes de IHC</a>
+                <a href="#modelo-relacional" class="hover:text-interacao transition">Modelagem de Dados</a>
+                <a href="#autores" class="hover:text-interacao transition">Autores</a>
+            </nav>
+            
+            <div>
+                <a href="index.html" class="bg-acao-principal hover:bg-interacao text-white px-5 py-2.5 rounded-lg font-bold shadow-sm transition text-sm">
+                    Executar Sistema
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <section class="pt-36 pb-20 bg-gradient-to-b from-white to-[#CECCE1]/40 px-4 text-center">
+        <div class="max-w-3xl mx-auto">
+            <span class="border border-interacao text-interacao text-xs font-semibold px-3 py-1 rounded-full uppercase tracking-wider">Ciência da Computação</span>
+            <h1 class="text-4xl md:text-6xl font-black font-didot mt-4 tracking-tight leading-tight text-estrutura">
+                "O estoque na palma da mão, a venda num clique."
+            </h1>
+            <p class="text-base text-gray-600 mt-6 max-w-2xl mx-auto font-light text-justify md:text-center">
+                Uma abordagem computacional para a otimização de fluxos operacionais em microcomércio. O projeto mapeia estruturas relacionais complexas sob uma interface projetada para redução de carga cognitiva e latência de balcão.
+            </p>
+            <div class="mt-10 flex flex-col sm:flex-row justify-center gap-4">
+                <a href="#arquitetura" class="bg-acao-principal text-white px-6 py-3 rounded-lg font-bold hover:bg-estrutura transition shadow-md text-sm">
+                    Ver Abordagem Científica
+                </a>
+                <a href="index.html" class="border border-interacao text-interacao hover:bg-white px-6 py-3 rounded-lg font-medium transition text-sm">
+                    Acessar Protótipo
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <section id="arquitetura" class="py-20 bg-white px-4 hidden-scroll">
+        <div class="max-w-4xl mx-auto">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold font-didot text-estrutura">Concepção do Projeto</h2>
+                <div class="h-1 w-12 bg-acao-principal mx-auto mt-3 rounded"></div>
+            </div>
+            <div class="space-y-6 text-base leading-relaxed text-gray-700 max-w-3xl mx-auto text-justify">
+                <p>
+                    O projeto <strong>Moda Fácil</strong> foi desenvolvido sob os pilares da Ciência da Computação para sanar a inconsistência de dados e os gargalos de concorrência comuns no gerenciamento manual ou rudimentar de estoques têxteis. Sistemas comerciais genéricos frequentemente falham em prover usabilidade ágil, operando com alta latência de comandos devido a excessos de escopo.
+                </p>
+                <p>
+                    Nossa solução trata o problema por meio de modelagem matemática rigorosa: isolamos as propriedades gerais da entidade pai em especializações estruturadas e controlamos as mutações de inventário através de transações atômicas no banco de dados. O processamento em segundo plano opera em sincronia com a interface para garantir integridade referencial instantânea a cada transação efetuada.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <section id="ihc" class="py-20 bg-[#CECCE1]/30 px-4 hidden-scroll">
+        <div class="max-w-5xl mx-auto">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl font-bold font-didot text-estrutura">Raciocínio de IHC e Identidade Visual</h2>
+                <p class="text-sm text-gray-600 mt-2">Tomadas de decision cromáticas e tipográficas voltadas à redução de erros de digitação e tempo de busca visual.</p>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-12">
+                <div class="bg-white p-8 rounded-2xl shadow-sm border border-gray-100 hidden-scroll">
+                    <h3 class="text-xl font-bold mb-6 flex items-center gap-2 text-estrutura">🔤 Hierarquia Tipográfica</h3>
+                    <div class="space-y-4">
+                        <div class="border-b pb-3">
+                            <span class="font-didot text-2xl block text-estrutura">Didot</span>
+                            <span class="text-xs text-gray-500">Aplicações: Elementos de alta ordem visual, marcas de cabeçalho e títulos estruturais. Evoca a semântica estética do domínio de aplicação (moda).</span>
+                        </div>
+                        <div>
+                            <span class="font-bold text-lg block text-gray-800">News Gothic MT</span>
+                            <span class="text-xs text-gray-500">Aplicações: Áreas administrativas, tabelas relacionais, formulários de entrada e strings de exibição. Escolhida por sua alta legibilidade em telas de baixa amostragem, diminuindo o tempo de varredura visual do operador.</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white p-8 rounded-2xl shadow-sm border border-gray-100 hidden-scroll">
+                    <h3 class="text-xl font-bold mb-6 flex items-center gap-2 text-estrutura">🎨 Esquema de Cores Monocromático</h3>
+                    <div class="grid grid-cols-2 gap-3 text-white text-xs font-medium">
+                        <div class="p-3 rounded bg-estrutura">Estrutura (Menus)<br><span class="opacity-75">RGB(16, 12, 54)</span></div>
+                        <div class="p-3 rounded bg-acao-principal">Ação Principal (Venda)<br><span class="opacity-75">RGB(44, 38, 97)</span></div>
+                        <div class="p-3 rounded bg-interacao">Interação (Hover/Ícones)<br><span class="opacity-75">RGB(84, 78, 139)</span></div>
+                        <div class="p-3 rounded bg-organizacao">Organização (Cards)<br><span class="opacity-75">RGB(137, 132, 182)</span></div>
+                        <div class="p-3 rounded bg-alerta-ambar text-[#100C36] font-bold col-span-2 text-center">
+                            ⚠️ Acento Âmbar Complementar: Isolado estritamente para interrupções críticas do sistema (Ex: Estoque Mínimo Atingido).
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="modelo-relacional" class="py-20 bg-white px-4 hidden-scroll">
+        <div class="max-w-5xl mx-auto">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl font-bold font-didot text-estrutura">Arquitetura de Banco de Dados Relacional</h2>
+                <p class="text-sm text-gray-600 mt-2">Mapeamento lógico estruturado para persistência segura e eliminação de redundâncias comuns a planilhas.</p>
+                <img src="img/esquema er.png" alt="Diagrama Relacional" class="mx-auto mt-8 max-w-full border border-gray-200 rounded-lg shadow-sm error-fallback hidden-scroll">
+            </div>
+
+            <div class="grid sm:grid-cols-2 md:grid-cols-3 gap-6">
+                <div class="p-6 bg-[#CECCE1]/20 rounded-xl border border-gray-100 hidden-scroll">
+                    <span class="text-2xl mb-2 block">🧬</span>
+                    <h4 class="font-bold text-gray-900 mb-1">Especialização de Entidades</h4>
+                    <p class="text-xs text-gray-600">A entidade genérica <code>PRODUTO</code> ramifica-se logicamente em tabelas especializadas (<code>ROUPA</code>, <code>CALÇADO</code>, <code>ACESSÓRIO</code>) via chaves estrangeiras vinculadas.</p>
+                </div>
+                <div class="p-6 bg-[#CECCE1]/20 rounded-xl border border-gray-100 hidden-scroll">
+                    <span class="text-2xl mb-2 block">📊</span>
+                    <h4 class="font-bold text-gray-900 mb-1">Gerenciamento de Variantes</h4>
+                    <p class="text-xs text-gray-600">O mapeamento de atributos voláteis (cor, tamanho, estoque e SKU) é isolado na relação <code>VARIANTE</code>, viabilizando consultas complexas de cardinalidade de forma otimizada.</p>
+                </div>
+                <div class="p-6 bg-[#CECCE1]/20 rounded-xl border border-gray-100 hidden-scroll">
+                    <span class="text-2xl mb-2 block">📉</span>
+                    <h4 class="font-bold text-gray-900 mb-1">Atomicidade e Baixa</h4>
+                    <p class="text-xs text-gray-600">A relação associativa <code>ITEM_VENDA</code> decompõe o relacionamento N:N entre vendas e variantes. As atualizações de inventário em <code>MOVIMENTAÇÃO_ESTOQUE</code> seguem o princípio de atomicidade.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="autores" class="py-20 bg-estrutura text-white px-4 hidden-scroll">
+        <div class="max-w-5xl mx-auto">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl font-bold font-didot text-white">Autores do Trabalho Científico</h2>
+                <div class="h-1 w-12 bg-[#8984B6] mx-auto mt-3 rounded"></div>
+                <p class="text-[#CECCE1] text-sm mt-4">Corpo acadêmico responsável pela pesquisa, modelagem de dados e desenvolvimento algorítmico.</p>
+            </div>
+
+            <div class="grid sm:grid-cols-2 md:grid-cols-4 gap-6">
+                <div class="bg-[#2C2661]/40 border border-[#8984B6]/30 p-6 rounded-xl text-center flex flex-col justify-between items-center shadow-sm hidden-scroll">
+                    <div class="w-20 h-20 bg-[#544E8B] rounded-full overflow-hidden mb-3 border-2 border-[#8984B6]">
+                        <img src="img/fc.png" alt="Fernanda Chen" class="w-full h-full object-cover">
+                    </div>
+                    <div>
+                        <h3 class="text-base font-bold text-white">Fernanda Chen</h3>
+                    </div>
+                    <a href="https://github.com/chenxsz" target="_blank" class="bg-[#544E8B] hover:bg-[#8984B6] text-white text-xs font-medium px-4 py-1.5 rounded transition flex items-center gap-1">
+                        <img src="img/github-logo.png" alt="GitHub" class="w-4 h-4"> GitHub
+                    </a>
+                </div>
+
+                <div class="bg-[#2C2661]/40 border border-[#8984B6]/30 p-6 rounded-xl text-center flex flex-col justify-between items-center shadow-sm hidden-scroll">
+                    <div class="w-20 h-20 bg-[#544E8B] rounded-full overflow-hidden mb-3 border-2 border-[#8984B6]">
+                        <img src="img/mc.png" alt="Milena Cristina" class="w-full h-full object-cover">
+                    </div>
+                    <div>
+                        <h3 class="text-base font-bold text-white">Milena Cristina</h3>
+                    </div>
+                    <a href="https://github.com/" target="_blank" class="bg-[#544E8B] hover:bg-[#8984B6] text-white text-xs font-medium px-4 py-1.5 rounded transition flex items-center gap-1">
+                        <img src="img/github-logo.png" alt="GitHub" class="w-4 h-4"> GitHub
+                    </a>
+                </div>
+
+                <div class="bg-[#2C2661]/40 border border-[#8984B6]/30 p-6 rounded-xl text-center flex flex-col justify-between items-center shadow-sm hidden-scroll">
+                    <div class="w-20 h-20 bg-[#544E8B] rounded-full overflow-hidden mb-3 border-2 border-[#8984B6]">
+                        <img src="img/rv.png" alt="Raquel Vitória" class="w-full h-full object-cover">
+                    </div>
+                    <div>
+                        <h3 class="text-base font-bold text-white">Raquel Vitória</h3>
+                    </div>
+                    <a href="https://github.com/" target="_blank" class="bg-[#544E8B] hover:bg-[#8984B6] text-white text-xs font-medium px-4 py-1.5 rounded transition flex items-center gap-1">
+                        <img src="img/github-logo.png" alt="GitHub" class="w-4 h-4"> GitHub
+                    </a>
+                </div>
+
+                <div class="bg-[#2C2661]/40 border border-[#8984B6]/30 p-6 rounded-xl text-center flex flex-col justify-between items-center shadow-sm hidden-scroll">
+                    <div class="w-20 h-20 bg-[#544E8B] rounded-full overflow-hidden mb-3 border-2 border-[#8984B6]">
+                        <img src="img/ym.png" alt="Yoná Maia" class="w-full h-full object-cover">
+                    </div>
+                    <div>
+                        <h3 class="text-base font-bold text-white">Yoná Maia</h3>
+                    </div>
+                    <a href="https://github.com/yonamaiah-dot" target="_blank" class="bg-[#544E8B] hover:bg-[#8984B6] text-white text-xs font-medium px-4 py-1.5 rounded transition flex items-center gap-1">
+                        <img src="img/github-logo.png" alt="GitHub" class="w-4 h-4"> GitHub
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="contato" class="py-20 bg-white px-4 hidden-scroll">
+        <div class="max-w-xl mx-auto">
+            <div class="text-center mb-10">
+                <h2 class="text-3xl font-bold font-didot text-estrutura">Contato e Feedback</h2>
+                <p class="text-sm text-gray-600 mt-2">Dúvidas acadêmicas ou documentação técnica adicional sobre o projeto?</p>
+            </div>
+
+            <form action="#" method="POST" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-semibold text-gray-700 mb-1">Nome</label>
+                    <input type="text" required placeholder="Seu nome" class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-interacao outline-none transition text-sm">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-gray-700 mb-1">E-mail</label>
+                    <input type="email" required placeholder="seu.email@exemplo.com" class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-interacao outline-none transition text-sm">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-gray-700 mb-1">Mensagem</label>
+                    <textarea required rows="4" placeholder="Sua consideração ou dúvida técnica..." class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-interacao outline-none transition text-sm"></textarea>
+                </div>
+                <button type="submit" class="w-full bg-acao-principal hover:bg-estrutura text-white font-bold py-2.5 rounded-lg shadow transition text-sm">
+                    Enviar Mensagem
+                </button>
+            </form>
+        </div>
+    </section>
+
+    <footer class="bg-estrutura text-gray-400 py-6 px-4 text-center text-xs border-t border-[#2C2661]">
+        <p>&copy; 2026 Moda Fácil. Desenvolvido para fins de pesquisa em Ciência da Computação.</p>
+    </footer>
+
+    <script>
+        document.querySelectorAll('.error-fallback').forEach(img => {
+            img.onerror = function() { this.style.display = 'none'; };
+        });
+
+        const observerOptions = {
+            root: null, 
+            rootMargin: '0px 0px -50px 0px', 
+            threshold: 0.05
+        };
+
+        const scrollObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('show-scroll');
+                } else {
+                    entry.target.classList.remove('show-scroll');
+                }
+            });
+        }, observerOptions);
+
+        const animatableElements = document.querySelectorAll('.hidden-scroll');
+        animatableElements.forEach(el => scrollObserver.observe(el));
+    </script>
+</body>
+</html>

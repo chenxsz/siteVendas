@@ -1,0 +1,54 @@
+/* CSS/home.css */
+@import url('https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght=0,6..96,400..900;1,6..96,400..900&family=Inter:wght@300;400;500;600;700&display=swap');
+
+html {
+    scroll-behavior: smooth;
+}
+
+/* Configurações Base da Paleta de Cores do Grupo */
+body {
+    background-color: rgb(206, 204, 225); /* O Ambiente: Fundo Geral das Telas */
+    color: rgb(16, 12, 54);              /* Estrutura: Texto Escuro Base */
+    font-family: 'Inter', sans-serif;    /* News Gothic MT (Simulada via Inter para Web) */
+}
+
+/* Didot - Sofisticação, Títulos Principais e Identidade de Moda */
+.font-didot {
+    font-family: 'Bodoni Moda', serif;
+}
+
+/* Classes Utilitárias do Esquema Monocromático (Baseado no Documento Oficial) */
+.bg-ambiente { background-color: rgb(206, 204, 225); }
+.bg-organizacao { background-color: rgb(137, 132, 182); }
+.bg-interacao { background-color: rgb(84, 78, 139); }
+.bg-acao-principal { background-color: rgb(44, 38, 97); }
+.bg-estrutura { background-color: rgb(16, 12, 54); }
+
+/* Cores de Texto */
+.text-estrutura { color: rgb(16, 12, 54); }
+.text-organizacao { color: rgb(137, 132, 182); }
+.text-interacao { color: rgb(84, 78, 139); }
+
+/* Acento Crítico Âmbar - Restrito Estritamente a Eventos Críticos / Estoque Baixo */
+.bg-alerta-ambar { background-color: #f59e0b; }
+.text-alerta-ambar { color: #f59e0b; }
+
+
+/* ==========================================================================
+   ⚙️ LÓGICA DE ANIMAÇÃO POR SCROLL (INTERSECTION OBSERVER)
+   ========================================================================== */
+
+/* Estado Inicial: O elemento fica invisível, deslocado 40px para baixo e reduzido */
+.hidden-scroll {
+    opacity: 0;
+    transform: translateY(40px) scale(0.98);
+    transition: opacity 0.85s cubic-bezier(0.16, 1, 0.3, 1), 
+                transform 0.85s cubic-bezier(0.16, 1, 0.3, 1);
+    will-change: transform, opacity; /* Otimização de renderização via GPU em BCC */
+}
+
+/* Estado Final: Ativado via JavaScript quando o elemento entra no Viewport */
+.show-scroll {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+}
