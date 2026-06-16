@@ -349,7 +349,7 @@
             <div id="visao-perfil" class="tela-conteudo" style="display: none;">
                 <header>
                     <h2>Meu Perfil</h2>
-                    <p>Informações de autenticação e credenciais do lojista no sistema.</p>
+                    <p>Informações de autenticação e credenciais do lojista no system.</p>
                 </header>
 
                 <div class="perfil-container-bloco">
@@ -530,7 +530,7 @@
             }
 
             if (tipo === "SAÍDA") {
-                variante.estoqueAtual -= quantidade;
+                variante.estoqueAtual -= quantity;
                 mostrarToast(`Saída manual efetuada para [${variante.sku}].`, 'sucesso');
             } else {
                 variante.estoqueAtual += quantidade;
@@ -562,9 +562,15 @@
             event.preventDefault();
             const idVariante = parseInt(document.getElementById("venda-produto").value);
             const qtd = parseInt(document.getElementById("venda-qtd").value);
-            const preco = parseFloat(document.getElementById("venda-preco").value);
+            const precoInput = document.getElementById("venda-preco").value;
+            const preco = parseFloat(precoInput) || 79.90;
 
             const variante = bancoVariantes.find(v => v.id === idVariante);
+            if (!variante) {
+                mostrarToast("Selecione um item comercial válido.", "erro");
+                return;
+            }
+
             const jaNoCarrinho = carrinhoVendaAtual.filter(i => i.id === idVariante).reduce((acc, c) => acc + c.qtd, 0);
 
             if ((qtd + jaNoCarrinho) > variante.estoqueAtual) {
@@ -584,8 +590,10 @@
             const caixaVisual = document.getElementById("carrinho-lista");
             const txtTotal = document.getElementById("checkout-total-venda");
 
+            if (!caixaVisual || !txtTotal) return;
+
             if (carrinhoVendaAtual.length === 0) {
-                caVisual.innerHTML = "Carrinho vazio.";
+                caixaVisual.innerHTML = "Carrinho vazio."; // CORRIGIDO: caVisual mudou para caixaVisual
                 txtTotal.innerText = "R$ 0,00";
                 return;
             }
@@ -613,12 +621,14 @@
 
             carrinhoVendaAtual.forEach(item => {
                 const v = bancoVariantes.find(b => b.id === item.id);
-                v.estoqueAtual -= item.qtd;
-                
-                const horaAtual = new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
-                historicoMovimentacoes.unshift({
-                    hour: horaAtual, sku: item.sku, tipo: "BAIXA CAIXA", qtd: item.qtd, operador: usuariosCadastrados[usuarioLogadoAtivo].nome.split(' ')[0]
-                });
+                if (v) {
+                    v.estoqueAtual -= item.qtd;
+                    
+                    const horaAtual = new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+                    historicoMovimentacoes.unshift({
+                        hour: horaAtual, sku: item.sku, tipo: "BAIXA CAIXA", qtd: item.qtd, operador: usuariosCadastrados[usuarioLogadoAtivo].nome.split(' ')[0]
+                    });
+                }
             });
 
             const horaVenda = new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
@@ -642,6 +652,8 @@
 
         function renderDadosGeraisFaturamentoGrafico() {
             const tabelaRelatorio = document.querySelector("#tabela-relatorio-vendas tbody");
+            if (!tabelaRelatorio) return;
+            
             tabelaRelatorio.innerHTML = "";
 
             let faturamentoAcumulado = 0;
@@ -666,11 +678,13 @@
 
         function renderizarGraficoCategoriasDashboard() {
             const containerGrafico = document.getElementById("dashboard-chart-container");
+            if (!containerGrafico) return;
+
             containerGrafico.innerHTML = "";
             let faturamentoCategorias = { "Roupa": 0, "Calçado": 0, "Acessório": 0 };
 
             logVendasCupons.forEach(cupom => {
-                cupom.carrinhoDetalhes.forEach(item => { faturamentoCategorias[item.tipo] += item.subtotal; });
+                cupom.carrinhoDetalhes.forEach(item => { if(faturamentoCategorias[item.tipo] !== undefined) faturamentoCategorias[item.tipo] += item.subtotal; });
             });
 
             const maiorValor = Math.max(...Object.values(faturamentoCategorias), 100);
@@ -707,6 +721,8 @@
 
         function atualizarDadosPerfil(login) {
             const dados = usuariosCadastrados[login];
+            if (!dados) return;
+
             const partesNome = dados.nome.split(' ');
             const iniciais = (partesNome[0][0] + (partesNome.length > 1 ? partesNome[partesNome.length - 1][0] : '')).toUpperCase();
 
@@ -719,9 +735,11 @@
             document.querySelector('.perfil-titulo-dados strong').innerText = dados.matricula;
 
             const inputs = document.querySelectorAll('.perfil-form-dados input');
-            inputs[0].value = dados.nome;
-            inputs[1].value = dados.cpf;
-            inputs[2].value = login;
+            if(inputs.length >= 3) {
+                inputs[0].value = dados.nome;
+                inputs[1].value = dados.cpf;
+                inputs[2].value = login;
+            }
         }
 
         function fazerLogout() {
@@ -736,7 +754,9 @@
             document.querySelectorAll('.sidebar li').forEach(i => i.classList.remove('active'));
             document.getElementById('menu-perfil').classList.remove('perfil-ativo');
 
-            document.getElementById(`visao-${nomeTela}`).style.display = 'block';
+            const telaAlvo = document.getElementById(`visao-${nomeTela}`);
+            if(telaAlvo) telaAlvo.style.display = 'block';
+            
             if(nomeTela === 'perfil') {
                 document.getElementById('menu-perfil').classList.add('perfil-ativo');
             } else {
@@ -748,6 +768,8 @@
         function toggleSidebar() {
             const sidebar = document.getElementById('sidebar');
             const icon = document.getElementById('sidebar-icon');
+            if(!sidebar || !icon) return;
+
             sidebar.classList.toggle('collapsed');
 
             if (sidebar.classList.contains('collapsed')) {
